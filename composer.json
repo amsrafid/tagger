@@ -1,0 +1,18 @@
+{
+    "name": "amsrafid/html-tags",
+    "description": "Great tool to genarate HTML tags with attributes.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "amsrafid",
+            "email": "amsrafid@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Html\\" : "src/Html"
+        }
+    }
+}
