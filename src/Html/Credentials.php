@@ -11,7 +11,7 @@ trait Credentials
 	*/
 	private static $attrs = [
 		'tag_body' => [
-			'set' => ['body', 'txt', 'text']
+			'set' => ['body', 'txt', 'text', 't', 'b']
 		]/*,
 		'tag_class' => [
 			'origin' => 'class',
@@ -47,9 +47,17 @@ trait Credentials
 	];
 
 	public static $sudo = [
+		'a' => 'alt',
+		'c' => 'class',
 		'cls' => 'class',
-		'val' => 'value',
+		'i'  => ['id', 'name'],
 		'id'  => ['id', 'name'],
-		'name'  => ['id', 'name']
+		'n'  => ['id', 'name'],
+		'name'  => ['id', 'name'],
+		'p'  => 'placeholder',
+		's'  => 'src',
+		'st'  => 'style',
+		'v' => 'value',
+		'val' => 'value'
 	];
 }
