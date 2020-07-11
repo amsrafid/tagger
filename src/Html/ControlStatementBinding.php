@@ -12,20 +12,20 @@ interface ControlStatementBinding
 /**
 	* For statement
 	*/
-	public static function c_for();
+	public static function c_for($tag, $attributes, $set);
 
 	/**
 	* For statement
 	*/
-	public static function c_if();
+	public static function c_if($tag, $attributes, $set);
 
 	/**
 	* For statement
 	*/
-	public static function c_elseif();
+	public static function c_elseif($tag, $attributes, $set);
 
 	/**
 	* For statement
 	*/
-	public static function c_else();
+	public static function c_else($tag, $attributes, $set);
 }
