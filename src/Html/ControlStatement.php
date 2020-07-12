@@ -88,9 +88,10 @@ class ControlStatement implements ControlStatementBinding
 					}
 
 					foreach ($matches[0] as $value) {
-						$value = preg_replace('/\@/', '', $value);
+						$value = self::hasToken($value);
+
 						if(isset($ctx[$value]))
-							$attr[$attribute] = str_replace('@'.$value, $ctx[$value], $attr[$attribute]);
+							$attr[$attribute] = self::changeTokenToValue($value, $ctx[$value], $attr[$attribute]);
 					}
 				}
 			}
@@ -99,6 +100,31 @@ class ControlStatement implements ControlStatementBinding
 		}
 
 		return $attributes;
+	}
+
+	/**
+	* Replace token with actual value
+	* 
+	* @param string $token 	 	Token name without @
+	* @param string $replace 	Token replaced with
+	* @param string $value    Token replaced from
+	* @return string
+	*/
+	private static function changeTokenToValue($token, $replace, $value)
+	{
+		return str_replace('@'.$token, $replace, $value);
+	}
+
+	/**
+	* Check value contains a key token
+	* @token format exists or not
+	* 
+	* @param string  $value 		String that should contains token
+	* @return bool
+	*/
+	private static function hasToken($value)
+	{
+		return preg_replace('/\@/', '', $value);
 	}
 
 	/**

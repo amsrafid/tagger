@@ -32,11 +32,10 @@ class Tag
 	 * @param string $attributes  Attributes list
 	 * @return null|string
 	 */
-	public static function build($tag, $attributes = [])
+	public static function build($tag, $attributes)
 	{
 		self::$appends = [];
-		if ($attributes)
-			self::$attributes = $attributes;
+		self::$attributes = $attributes;
 
 		$body = self::any('tag_body', false);
 
