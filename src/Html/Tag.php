@@ -11,6 +11,13 @@ class Tag
 		Attribute;
 
 	/**
+	 * Appended attributes set
+	 * 
+	 * @var array
+	 */
+	public static $appends = [];
+
+	/**
 	 * Identical tag attribute set
 	 * 
 	 * @var array
@@ -18,11 +25,11 @@ class Tag
 	public static $attributes = [];
 
 	/**
-	 * Appended attributes set
+	 * Preset attributes
 	 * 
 	 * @var array
 	 */
-	public static $appends = [];
+	public static $preset = [];
 
 	/**
 	 * Find any attribute by inner origin name
@@ -147,5 +154,33 @@ class Tag
 			throw new \Exception("Invalid parameter for 'doctype' tag");
 			return '';
 		}
+	}
+
+	/**
+	 * Set some preset attributes by tag name
+	 * 
+	 * @param array $value 	Set attributes by tag name as key. Format
+	 * 		[
+	 * 			'tag' => [
+ 	 *				'c' => 'class-name',
+ 	 *				...
+ 	 *			],
+	 * 			...
+	 * 		]
+	 * @return void
+	 */
+	public static function set($value = [])
+	{
+		self::$preset = $value;
+	}
+
+	/**
+	 * Make empty to preset attributes value
+	 * 
+	 * @return void
+	 */
+	public static function stopSet()
+	{
+		self::$preset = [];
 	}
 }
