@@ -55,7 +55,8 @@ class ControlStatement implements ControlStatementBinding
 		unset($attributes['foreach']);
 
 		$offset = $start = 0;
-		
+		$condition = true;
+
 		if(isset($attributes['offset'])) {
 			$offset = $attributes['offset'];
 			unset($attributes['offset']);
@@ -64,16 +65,52 @@ class ControlStatement implements ControlStatementBinding
 				unset($attributes['start']);
 			}
 		}
+		if (isset($attributes['if'])){
+			$condition = $attributes['if'];
+		}
 		
 		if($object) {
 			foreach($object as $key => $obj) {
-				Tag::{$tag}(self::attributeValueAssign($obj, $attributes, $key, $offset, $start));
+				if(self::checkConditionals($obj, $condition, $key,  $offset, $start)){
+					Tag::{$tag}(self::attributeValueAssign($obj, $attributes, $key, $offset, $start));
+				}
 			}
 		}
 
 		return '';
 	}
 
+	/**
+	 * Change matching token to value
+	 * 
+	 * @param object 		$ctx 		Set context
+	 * @param string|object $condition  Loop nested condition string OR object
+	 * @param string 		$key 		Object real offset
+	 * @param string 		$offset  	Offset variable name
+	 * @param int    		$start 		Offset started from
+	 * @return void
+	 */
+	private static function checkConditionals($ctx, $condition, $key, $offset, $start)
+	{
+		if (gettype($condition) == 'string') {
+			preg_match_all('/[\@]\w+/', $condition, $matches);
+			self::changeMatchingToken($ctx, $condition, $matches, $key, $offset, $start);
+			return Condition::match($condition);
+		}
+
+		return $condition;
+	}
+
+	/**
+	 * Assign attributes value by key
+	 * 
+	 * @param object 	$ctx 		Set context
+	 * @param array 	$attributes Attributes set
+	 * @param string 	$key 		Object real offset
+	 * @param string 	$offset  	Offset variable name
+	 * @param int    	$start 		Offset started from
+	 * @return void
+	 */
 	private static function attributeValueAssign($ctx, $attributes, $key, $offset, $start)
 	{
 		if($attributes) {
@@ -82,24 +119,41 @@ class ControlStatement implements ControlStatementBinding
 			foreach(array_keys($attributes) as $attribute) {
 				preg_match_all('/[\@]\w+/', $attr[$attribute], $matches);
 
-				if($matches && current($matches)) {
-					if($offset) {
-						$ctx[$offset] = $key + $start;
-					}
-
-					foreach ($matches[0] as $value) {
-						$value = self::hasToken($value);
-
-						if(isset($ctx[$value]))
-							$attr[$attribute] = self::changeTokenToValue($value, $ctx[$value], $attr[$attribute]);
-					}
-				}
+				self::changeMatchingToken($ctx, $attr[$attribute], $matches, $key, $offset, $start);
 			}
 
 			return $attr;
 		}
 
 		return $attributes;
+	}
+
+	/**
+	* Change matching token to value
+	* 
+	* @param object 	$ctx 		Set context
+	* @param string 	&$tokenize	Pointer for tokenized string
+	* @param array  	$matches 	Total matching tokens
+	* @param string 	$key 		Object real offset
+	* @param string 	$offset  	Offset variable name
+	* @param int    	$start 		Offset started from
+	* @return void
+	*/
+	private static function changeMatchingToken($ctx, &$tokenize, $matches, $key, $offset, $start)
+	{
+		if($matches && current($matches)) {
+			if($offset) {
+				$ctx[$offset] = $key + $start;
+			}
+
+			foreach ($matches[0] as $value) {
+				$value = self::hasToken($value);
+
+				if(isset($ctx[$value])) {
+					$tokenize = self::changeTokenToValue($value, $ctx[$value], $tokenize);
+				}
+			}
+		}
 	}
 
 	/**
