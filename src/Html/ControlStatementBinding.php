@@ -9,11 +9,6 @@ interface ControlStatementBinding
 	*/
 	public static function c_foreach($tag, $attributes, $set);
 
-/**
-	* For statement
-	*/
-	public static function c_for($tag, $attributes, $set);
-
 	/**
 	* For statement
 	*/

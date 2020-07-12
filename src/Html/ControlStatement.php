@@ -36,8 +36,13 @@ class ControlStatement implements ControlStatementBinding
 	}
 
 	/**
-	* Handle Control statment
-	*/
+	 * Handle Control statment
+	 * 
+	 * Handle Control statment
+	 * Handle Control statment
+	 * Handle Control statment
+	 * Handle Control statment
+	 */
 	public static function handle($tag, $attributes, $set)
 	{
 		$first = 'c_'.current($set);
@@ -47,8 +52,13 @@ class ControlStatement implements ControlStatementBinding
 	}
 
 	/**
-	* For statement
-	*/
+	 * Conditional foreach statement
+	 * 
+	 * @param string 	$tag 		Tag name
+	 * @param array 	$attributes Tag Attributes
+	 * @param array 	$set 		Next conditional statement
+	 * @return tag view
+	 */
 	public static function c_foreach($tag, $attributes, $set)
 	{
 		$object = $attributes['foreach'];
@@ -65,7 +75,7 @@ class ControlStatement implements ControlStatementBinding
 				unset($attributes['start']);
 			}
 		}
-		if (isset($attributes['if'])){
+		if (isset($attributes['if'])) {
 			$condition = $attributes['if'];
 		}
 		
@@ -129,16 +139,16 @@ class ControlStatement implements ControlStatementBinding
 	}
 
 	/**
-	* Change matching token to value
-	* 
-	* @param object 	$ctx 		Set context
-	* @param string 	&$tokenize	Pointer for tokenized string
-	* @param array  	$matches 	Total matching tokens
-	* @param string 	$key 		Object real offset
-	* @param string 	$offset  	Offset variable name
-	* @param int    	$start 		Offset started from
-	* @return void
-	*/
+	 * Change matching token to value
+	 * 
+	 * @param object 	$ctx 		Set context
+	 * @param string 	&$tokenize	Pointer for tokenized string
+	 * @param array  	$matches 	Total matching tokens
+	 * @param string 	$key 		Object real offset
+	 * @param string 	$offset  	Offset variable name
+	 * @param int    	$start 		Offset started from
+	 * @return void
+	 */
 	private static function changeMatchingToken($ctx, &$tokenize, $matches, $key, $offset, $start)
 	{
 		if($matches && current($matches)) {
@@ -157,41 +167,40 @@ class ControlStatement implements ControlStatementBinding
 	}
 
 	/**
-	* Replace token with actual value
-	* 
-	* @param string $token 	 	Token name without @
-	* @param string $replace 	Token replaced with
-	* @param string $value    Token replaced from
-	* @return string
-	*/
+	 * Replace token with actual value
+	 * 
+	 * @param string $token 	 	Token name without @
+	 * @param string $replace 	Token replaced with
+	 * @param string $value    Token replaced from
+	 * @return string
+	 */
 	private static function changeTokenToValue($token, $replace, $value)
 	{
-		return str_replace('@'.$token, $replace, $value);
+		return preg_replace('/(\@'.$token.')/', $replace, $value);
 	}
 
 	/**
-	* Check value contains a key token
-	* @token format exists or not
-	* 
-	* @param string  $value 		String that should contains token
-	* @return bool
-	*/
+	 * Check value contains a key token
+	 * @token format exists or not
+	 * 
+	 * @param string  $value 		String that should contains token
+	 * @return bool
+	 */
 	private static function hasToken($value)
 	{
 		return preg_replace('/\@/', '', $value);
 	}
 
 	/**
-	* For statement
-	*/
-	public static function c_for($tag, $attributes, $set) {
-		echo 'for';
-	}
-
-	/**
-	* If statement
-	*/
-	public static function c_if($tag, $attributes, $set) {
+	 * Conditional if statement
+	 * 
+	 * @param string 	$tag 		Tag name
+	 * @param array 	$attributes Tag Attributes
+	 * @param array 	$set 		Next conditional statement
+	 * @return tag view
+	 */
+	public static function c_if ($tag, $attributes, $set)
+	{
 		$object = $attributes['if'];
 		unset($attributes['if']);
 		
@@ -203,15 +212,25 @@ class ControlStatement implements ControlStatementBinding
 	}
 
 	/**
-	* Else if statement
-	*/
+	 * Coditional else if statement
+	 * 
+	 * @param string 	$tag 		Tag name
+	 * @param array 	$attributes Tag Attributes
+	 * @param array 	$set 		Next conditional statement
+	 * @return tag view
+	 */
 	public static function c_elseif($tag, $attributes, $set) {
 		echo 'else_if';
 	}
 
 	/**
-	* Else statement
-	*/
+	 * Coditional else statement
+	 * 
+	 * @param string 	$tag 		Tag name
+	 * @param array 	$attributes Tag Attributes
+	 * @param array 	$set 		Next conditional statement
+	 * @return tag view
+	 */
 	public static function c_else($tag, $attributes, $set) {
 		echo 'else';
 	}

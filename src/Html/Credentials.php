@@ -3,7 +3,7 @@ namespace Html;
 
 trait Credentials
 {
-	/*
+	/**
 	* Special attribute set,
 	*	used to identify in view generation
 	*
@@ -12,19 +12,10 @@ trait Credentials
 	private static $attrs = [
 		'tag_body' => [
 			'set' => ['body', 'txt', 'text', 't', 'b']
-		]/*,
-		'tag_class' => [
-			'origin' => 'class',
-			'set' => ['cls', 'class']
-		],
-		'tag_identity' => [
-			'both' => true,
-			'origin' =>	['id', 'name'],
-			'set' => ['id', 'name']
-		]*/
+		]
 	];
 
-	/*
+	/**
 	* Tags who has no ending tag by birth
 	* 
 	* @var array
@@ -61,3 +52,14 @@ trait Credentials
 		'val' => 'value'
 	];
 }
+/*,
+	'tag_class' => [
+		'origin' => 'class',
+		'set' => ['cls', 'class']
+	],
+	'tag_identity' => [
+		'both' => true,
+		'origin' =>	['id', 'name'],
+		'set' => ['id', 'name']
+	]
+*/

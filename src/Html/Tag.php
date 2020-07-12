@@ -4,14 +4,25 @@ namespace Html;
 class Tag
 {
 	use Credentials,
-			Attribute;
+		Attribute;
 
+	/**
+	 * Identical tag attribute set
+	 * 
+	 * @var array
+	 */
 	public static $attributes = [];
+
+	/**
+	* Appended attributes set
+	* 
+	* @var array
+	*/
 	public static $appends = [];
 
 	public static function __callStatic ($tag, $attributes)
 	{
-		self::$appends = [];
+		//self::$appends = [];
 		if($attributes)
 			$attributes = current($attributes);
 
@@ -61,18 +72,16 @@ class Tag
 
 		if(isset(self::$attrs[$name])) {
 			foreach (self::$attrs[$name]['set'] as $i => $attr) {
+				$attrFin = self::attrFormat($attr, $expression);
 
-					$attrFin = self::attrFormat($attr, $expression);
-
-					if($attrFin && self::monitor($attr)) {
-						if(isset(self::$attrs[$name]['both']) && self::$attrs[$name]['both']) {
-							$format .= self::attrFormat($attr, $expression);
-						}
-						else {
-							return $attrFin;
-						}
+				if($attrFin && self::monitor($attr)) {
+					if(isset(self::$attrs[$name]['both']) && self::$attrs[$name]['both']) {
+						$format .= self::attrFormat($attr, $expression);
 					}
-
+					else {
+						return $attrFin;
+					}
+				}
 			}
 		}
 
