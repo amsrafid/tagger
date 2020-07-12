@@ -15,11 +15,11 @@ class ControlStatement implements ControlStatementBinding
 	private static $states = ['foreach', 'for', 'if', 'elseif', 'else'];
 
 	/**
-	* Check the attribute is a control statement or not
-	* 
-	* @param string $statement  attribute name
-	* @return bool
-	*/
+	 * Check the attribute is a control statement or not
+	 * 
+	 * @param string $statement  attribute name
+	 * @return bool
+	 */
 	public static function match($statement)
 	{
 		$statement = (object) (\is_array($statement) ? $statement : [$statement]);
@@ -38,10 +38,10 @@ class ControlStatement implements ControlStatementBinding
 	/**
 	 * Handle Control statment
 	 * 
-	 * Handle Control statment
-	 * Handle Control statment
-	 * Handle Control statment
-	 * Handle Control statment
+	 * @param string 	$tag 		Tag name
+	 * @param array 	$attributes Tag Attributes
+	 * @param array 	$set 		Next conditional statement
+	 * @return tag view
 	 */
 	public static function handle($tag, $attributes, $set)
 	{

@@ -4,11 +4,11 @@ namespace Html;
 trait Credentials
 {
 	/**
-	* Special attribute set,
-	*	used to identify in view generation
-	*
-	* @var object
-	*/
+	 * Special attribute set,
+	 *	used to identify in view generation
+	 *
+	 * @var object
+	 */
 	private static $attrs = [
 		'tag_body' => [
 			'set' => ['body', 'txt', 'text', 't', 'b']
@@ -16,10 +16,10 @@ trait Credentials
 	];
 
 	/**
-	* Tags who has no ending tag by birth
-	* 
-	* @var array
-	*/
+	 * Tags who has no ending tag by birth
+	 * 
+	 * @var array
+	 */
 	public static $single = [
 		'area',
 		'base',
@@ -37,6 +37,11 @@ trait Credentials
 		'wbr'
 	];
 
+	/**
+	 * Attributes sudo name
+	 * 
+	 * @var array
+	 */
 	public static $sudo = [
 		'a' => 'alt',
 		'c' => 'class',
