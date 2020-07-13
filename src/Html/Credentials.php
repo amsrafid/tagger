@@ -46,6 +46,7 @@ trait Credentials
 		'a' => 'alt',
 		'c' => 'class',
 		'cls' => 'class',
+		'cont' => 'content',
 		'i'  => ['id', 'name'],
 		'id'  => ['id', 'name'],
 		'n'  => ['id', 'name'],

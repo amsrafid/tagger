@@ -23,22 +23,41 @@ trait Attribute
 		return "";
 	}
 
-	private static function attributes()
+	/**
+	 * Check attributes existing or format
+	 * 
+	 * @param string  $tag  Tag name
+	 * @param string 		All formated attributes
+	 */
+	private static function attributes($tag)
 	{
 		$all_attr = "";
 
 		if(self::$attributes) {
 			foreach(self::$attributes as $key => $attr) {
-
 				if(\array_key_exists($key, self::$sudo)) {
-					$all_attr .= self::attributeFormat(self::$sudo[$key], $attr);
+
+					if(array_key_exists($tag, self::$preset)){
+						print_r(self::$sudo[$key]);
+						print_r(self::$preset);
+					}
+					
+					$all_attr .= self::attributeFormat($tag, self::$sudo[$key], $attr);
 				} else {
-					$all_attr .= self::attributeFormat($key, $attr);
+					$all_attr .= self::attributeFormat($tag, $key, $attr);
 				}
 			}
 		}
 
 		return $all_attr;
+	}
+
+	/**
+	 * 
+	 */
+	private function concatToSetAttributes(&$value = '')
+	{
+		# code...
 	}
 
 	/**
@@ -48,14 +67,17 @@ trait Attribute
 	 * @param string
 	 * @return string
 	 */
-	private static function attributeFormat($key, $attr)
+	private static function attributeFormat($tag, $key, $attr)
 	{
 		$attributes = "";
 		$fields = \is_array($key) ? $key : [$key];
-
+		
 		foreach ($fields as $key => $field) {
-			if(self::monitor($field))
-				$attributes .= ' '.preg_replace(['/^(d-)/', '/^.*\_/', '/^.*\*/'], 'data-', $field).' = "'.$attr.'"';
+			if(self::monitor($field)) {
+				$attributes .= ' '.preg_replace(['/^(d-)/', '/^.*\_/', '/^.*\*/'],
+												'data-',
+												$field) .' = "' .$attr .'"';
+			}
 		}
 
 		return $attributes;

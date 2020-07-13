@@ -48,7 +48,7 @@ class Tag
 
 				if($attrFin && self::monitor($attr)) {
 					if(isset(self::$attrs[$name]['both']) && self::$attrs[$name]['both']) {
-						$format .= self::attrFormat($attr, $expression);
+						$format .= $attrFin;	/* <- new | old -> self::attrFormat($attr, $expression); */
 					}
 					else {
 						return $attrFin;
@@ -75,11 +75,11 @@ class Tag
 		$body = self::any('tag_body', false);
 
 		if($body && ! in_array($tag, self::$single)) {
-			?><<?= "{$tag}" ?><?= self::attributes() ?>><?= (gettype($body) == 'object')
+			?><<?= "{$tag}" ?><?= self::attributes($tag) ?>><?= (gettype($body) == 'object')
 				? $body(new self)
 				: $body ?></<?= $tag ?>><?php
 		} else {
-			?><<?= "{$tag}" ?><?= self::attributes() ?> /><?php
+			?><<?= "{$tag}" ?><?= self::attributes($tag) ?> /><?php
 		}
 	}
 

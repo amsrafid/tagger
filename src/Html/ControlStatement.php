@@ -105,6 +105,7 @@ class ControlStatement implements ControlStatementBinding
 		if (gettype($condition) == 'string') {
 			preg_match_all('/[\@]\w+/', $condition, $matches);
 			self::changeMatchingToken($ctx, $condition, $matches, $key, $offset, $start);
+
 			return Condition::match($condition);
 		}
 
@@ -153,7 +154,7 @@ class ControlStatement implements ControlStatementBinding
 	{
 		if($matches && current($matches)) {
 			if($offset) {
-				$ctx[$offset] = $key + $start;
+				$ctx[$offset] = abs($key + $start);
 			}
 
 			foreach ($matches[0] as $value) {

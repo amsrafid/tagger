@@ -19,7 +19,6 @@ class Condition
 	 */
 	public static function match ($condition)
 	{
-
 	    preg_match('/.*(.*?)\s(.*?)\s(.*?)/sU', $condition, $condition_matches);
 
 	    $cond_left = self::trimSpecialCharFromMatch($condition_matches, 1);
