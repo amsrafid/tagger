@@ -43,13 +43,18 @@ trait Attribute
 		return $attrString;
 	}
 
+	/**
+	 * Bind preset attributes with main attribute
+	 * 
+	 * @param string $tag 	Tag name
+	 * @return array
+	 */
 	private static function bindedAttributes($tag)
 	{
-		$presets = ! empty(self::$preset[$tag]) ? self::$preset[$tag] : [];
 		$attributes = self::$attributes;
 
-		if($presets) {
-			foreach($presets as $key => $preset) {
+		if(! empty(self::$preset[$tag])) {
+			foreach(self::$preset[$tag] as $key => $preset) {
 				$sudo = self::getAttributeMainName($key);
 
 				if(isset($attributes[$key]))
@@ -77,9 +82,10 @@ trait Attribute
 		$key = self::getAttributeMainName($key);
 
 		if(self::monitor($key)) {
-			$attributes .= preg_replace(['/^(d-)/', '/^.*\_/', '/^.*\*/'], 'data-', $key)
-												.' = "' . $attr .'"';
+			$key = preg_replace(['/^(d-)/', '/^.*\_/', '/^.*\*/'], 'data-', $key);
+			$attributes .= $key .' = "' . $attr .'"';
 		}
+		
 		return $attributes;
 	}
 

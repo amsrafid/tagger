@@ -12,7 +12,7 @@ class ControlStatement implements ControlStatementBinding
 	 * 
 	 * @var array
 	 */
-	private static $states = ['foreach', 'for', 'if', 'elseif', 'else'];
+	private static $states = ['foreach', 'if', 'elseif', 'else'];
 
 	/**
 	 * Check the attribute is a control statement or not
