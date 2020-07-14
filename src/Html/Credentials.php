@@ -47,10 +47,8 @@ trait Credentials
 		'c' => 'class',
 		'cls' => 'class',
 		'cont' => 'content',
-		'i'  => ['id', 'name'],
-		'id'  => ['id', 'name'],
-		'n'  => ['id', 'name'],
-		'name'  => ['id', 'name'],
+		'i'  => 'id',
+		'n'  => 'name',
 		'p'  => 'placeholder',
 		's'  => 'src',
 		'st'  => 'style',
@@ -58,14 +56,3 @@ trait Credentials
 		'val' => 'value'
 	];
 }
-/*,
-	'tag_class' => [
-		'origin' => 'class',
-		'set' => ['cls', 'class']
-	],
-	'tag_identity' => [
-		'both' => true,
-		'origin' =>	['id', 'name'],
-		'set' => ['id', 'name']
-	]
-*/

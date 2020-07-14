@@ -31,33 +31,37 @@ trait Attribute
 	 */
 	private static function attributes($tag)
 	{
-		$all_attr = "";
+		$attrString = "";
+		$attributes = self::bindedAttributes($tag);
 
-		if(self::$attributes) {
-			foreach(self::$attributes as $key => $attr) {
-				if(\array_key_exists($key, self::$sudo)) {
+		if($attributes) {
+			foreach($attributes as $key => $attr) {
+				$attrString .= self::attributeFormat($tag, $key, $attr);
+			}
+		}
+		
+		return $attrString;
+	}
 
-					if(array_key_exists($tag, self::$preset)){
-						print_r(self::$sudo[$key]);
-						print_r(self::$preset);
-					}
-					
-					$all_attr .= self::attributeFormat($tag, self::$sudo[$key], $attr);
-				} else {
-					$all_attr .= self::attributeFormat($tag, $key, $attr);
-				}
+	private static function bindedAttributes($tag)
+	{
+		$presets = ! empty(self::$preset[$tag]) ? self::$preset[$tag] : [];
+		$attributes = self::$attributes;
+
+		if($presets) {
+			foreach($presets as $key => $preset) {
+				$sudo = self::getAttributeMainName($key);
+
+				if(isset($attributes[$key]))
+					$attributes[$key] .= " " . $preset;
+				else if (isset($attributes[$sudo]))
+					$attributes[$sudo] .= " " . $preset;
+				else
+					$attributes[$key] = $preset;
 			}
 		}
 
-		return $all_attr;
-	}
-
-	/**
-	 * 
-	 */
-	private function concatToSetAttributes(&$value = '')
-	{
-		# code...
+		return $attributes;
 	}
 
 	/**
@@ -69,17 +73,13 @@ trait Attribute
 	 */
 	private static function attributeFormat($tag, $key, $attr)
 	{
-		$attributes = "";
-		$fields = \is_array($key) ? $key : [$key];
-		
-		foreach ($fields as $key => $field) {
-			if(self::monitor($field)) {
-				$attributes .= ' '.preg_replace(['/^(d-)/', '/^.*\_/', '/^.*\*/'],
-												'data-',
-												$field) .' = "' .$attr .'"';
-			}
-		}
+		$attributes = " ";
+		$key = self::getAttributeMainName($key);
 
+		if(self::monitor($key)) {
+			$attributes .= preg_replace(['/^(d-)/', '/^.*\_/', '/^.*\*/'], 'data-', $key)
+												.' = "' . $attr .'"';
+		}
 		return $attributes;
 	}
 
@@ -91,6 +91,8 @@ trait Attribute
 	 */
 	private static function monitor($key)
 	{
+		$key = self::getAttributeMainName($key);
+		
 		if(! \in_array($key, self::$appends)) {
 			self::$appends [] = $key;
 
@@ -98,5 +100,16 @@ trait Attribute
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check key has sudo or not
+	 * 
+	 * @param string $key 	Attribute sudo name
+	 * @return string
+	 */
+	private static function getAttributeMainName($key)
+	{
+		return isset(self::$sudo[$key]) ? self::$sudo[$key] : $key;
 	}
 }

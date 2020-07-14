@@ -8,7 +8,7 @@ namespace Html;
 class Tag
 {
 	use Credentials,
-		Attribute;
+			Attribute;
 
 	/**
 	 * Appended attributes set
@@ -47,12 +47,10 @@ class Tag
 				$attrFin = self::attrFormat($attr, $expression);
 
 				if($attrFin && self::monitor($attr)) {
-					if(isset(self::$attrs[$name]['both']) && self::$attrs[$name]['both']) {
-						$format .= $attrFin;	/* <- new | old -> self::attrFormat($attr, $expression); */
-					}
-					else {
+					if(isset(self::$attrs[$name]['both']) && self::$attrs[$name]['both'])
+						$format .= $attrFin;
+					else
 						return $attrFin;
-					}
 				}
 			}
 		}
@@ -77,7 +75,7 @@ class Tag
 		if($body && ! in_array($tag, self::$single)) {
 			?><<?= "{$tag}" ?><?= self::attributes($tag) ?>><?= (gettype($body) == 'object')
 				? $body(new self)
-				: $body ?></<?= $tag ?>><?php
+				: (gettype($body) == 'boolean' && $body ? "": $body) ?></<?= $tag ?>><?php
 		} else {
 			?><<?= "{$tag}" ?><?= self::attributes($tag) ?> /><?php
 		}
@@ -95,11 +93,11 @@ class Tag
 		if($attributes)
 			$attributes = current($attributes);
 
-		if(\in_array(gettype($attributes), ['object', 'string'])) {
-			$attributes = ['body' => $attributes];
+		if(\gettype($attributes) == 'array') {
+			self::$attributes = current($attributes);
 		}
 		else {
-			self::$attributes = current($attributes);
+			$attributes = ['body' => $attributes];
 		}
 
 		return self::distribute($tag, $attributes);
@@ -113,13 +111,14 @@ class Tag
 	 */
 	public static function comment($value = '')
 	{
-		if(gettype($value) == 'object') {
-			?><!-- <?= $value(new self) ?> --><?php
-		} else if (gettype($value) == 'string') {
-			?><!-- <?= $value ?> --><?php
-		} else {
+		if (gettype($value) == 'array') {
 			throw new \Exception("Invalid parameter for 'comment' tag");
 			return '';
+		}
+		else if(gettype($value) == 'object') {
+			?><!-- <?= $value(new self) ?> --><?php
+		} else {
+			?><!-- <?= $value ?> --><?php
 		}
 	}
 
@@ -146,13 +145,13 @@ class Tag
 	 */
 	public static function doctype($value = 'html')
 	{
-		if(gettype($value) == 'object') {
-			?><!DOCTYPE <?= $value(new self) ?>><?php
-		} else if (gettype($value) == 'string') {
-			?><!DOCTYPE <?= $value ?>><?php
-		} else {
+		if(gettype($value) == 'array') {
 			throw new \Exception("Invalid parameter for 'doctype' tag");
 			return '';
+		} else if (gettype($value) == 'object') {
+			?><!DOCTYPE <?= $value(new self) ?>><?php
+		} else {
+			?><!DOCTYPE <?= $value ?>><?php
 		}
 	}
 
