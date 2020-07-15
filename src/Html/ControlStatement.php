@@ -15,6 +15,13 @@ class ControlStatement implements ControlStatementBinding
 	private static $states = ['foreach', 'if', 'elseif', 'else'];
 
 	/**
+	 * Monitor Control statement if
+	 * 
+	 * @var bool
+	 */
+	private static $monitorIf = true;
+
+	/**
 	 * Check the attribute is a control statement or not
 	 * 
 	 * @param string $statement  attribute name
@@ -204,9 +211,12 @@ class ControlStatement implements ControlStatementBinding
 	{
 		$object = $attributes['if'];
 		unset($attributes['if']);
+		self::$monitorIf = true;
 		
 		if($object) {
-			Tag::{$tag}($attributes);
+			return Tag::{$tag}($attributes);
+		} else {
+			self::$monitorIf = false;
 		}
 
 		return '';
@@ -221,7 +231,15 @@ class ControlStatement implements ControlStatementBinding
 	 * @return tag view
 	 */
 	public static function c_elseif($tag, $attributes, $set) {
-		echo 'else_if';
+		$object = $attributes['elseif'];
+		unset($attributes['elseif']);
+		
+		if(! self::$monitorIf && $object) {
+			self::$monitorIf = true;
+			return Tag::{$tag}($attributes);
+		}
+
+		return '';
 	}
 
 	/**
@@ -233,6 +251,15 @@ class ControlStatement implements ControlStatementBinding
 	 * @return tag view
 	 */
 	public static function c_else($tag, $attributes, $set) {
-		echo 'else';
+		$object = $attributes['else'];
+		unset($attributes['else']);
+		
+		if(! self::$monitorIf && $object != false) {
+			self::$monitorIf = true;
+			return Tag::{$tag}($attributes);
+		}
+		
+		self::$monitorIf = true;
+		return '';
 	}
 }
