@@ -78,12 +78,12 @@ trait Attribute
 	 */
 	private static function attributeFormat($tag, $key, $attr)
 	{
-		$attributes = " ";
+		$attributes = "";
 		$key = self::getAttributeMainName($key);
 
 		if(self::monitor($key)) {
 			$key = preg_replace(['/^(d-)/', '/^.*\_/', '/^.*\*/'], 'data-', $key);
-			$attributes .= $key .' = "' . $attr .'"';
+			$attributes .= ' ' . $key .' = "' . $attr .'"';
 		}
 		
 		return $attributes;

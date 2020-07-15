@@ -63,7 +63,7 @@ class Tag
 	 * 
 	 * @param string $tag         Tag name
 	 * @param string $attributes  Attributes list
-	 * @return null|string
+	 * @return Html\Tag
 	 */
 	public static function build ($tag, $attributes)
 	{
@@ -79,6 +79,8 @@ class Tag
 		} else {
 			?><<?= "{$tag}" ?><?= self::attributes($tag) ?> /><?php
 		}
+
+		return new self;
 	}
 
 	/**
