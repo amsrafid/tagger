@@ -7,8 +7,7 @@ namespace Html;
  */
 class Tag
 {
-	use Credentials,
-			Attribute;
+	use Attribute;
 
 	/**
 	 * Appended attributes set
@@ -68,14 +67,17 @@ class Tag
 	public static function build ($tag, $attributes)
 	{
 		self::$appends = [];
-		self::$attributes = $attributes;
+		self::$attributes = self::discoverBody($attributes);
 
 		$body = self::any('tag_body', false);
 
 		if($body && ! in_array($tag, self::$single)) {
 			?><<?= "{$tag}" ?><?= self::attributes($tag) ?>><?= (gettype($body) == 'object')
 				? $body(new self)
-				: (gettype($body) == 'boolean' && $body ? "": $body) ?></<?= $tag ?>><?php
+				: (gettype($body) == 'array'
+					? self::multiLevelTag($body)
+					: (gettype($body) == 'boolean' && $body ? "": $body)
+				) ?></<?= $tag ?>><?php
 		} else {
 			?><<?= "{$tag}" ?><?= self::attributes($tag) ?> /><?php
 		}
@@ -154,6 +156,22 @@ class Tag
 			?><!DOCTYPE <?= $value(new self) ?>><?php
 		} else {
 			?><!DOCTYPE <?= $value ?>><?php
+		}
+	}
+
+	/**
+	 * Multi level tag only tag and value
+	 * 
+	 * @param array	$body		Tag body with tag body
+	 * @return void
+	 */
+	public static function multiLevelTag($body)
+	{
+		if($body) {
+			foreach($body as $tag => $text) {
+				foreach($text as $txt)
+					self::{$tag}($txt);
+			}
 		}
 	}
 

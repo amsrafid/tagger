@@ -7,6 +7,8 @@ namespace Html;
 */
 class ControlStatement implements ControlStatementBinding
 {
+	use Attribute;
+
 	/**
 	 * Control Statement states
 	 * 
@@ -52,6 +54,7 @@ class ControlStatement implements ControlStatementBinding
 	 */
 	public static function handle($tag, $attributes, $set)
 	{
+		$attributes = self::discoverBody($attributes);
 		$first = 'c_'.current($set);
 			unset($set[0]);
 
@@ -117,86 +120,6 @@ class ControlStatement implements ControlStatementBinding
 		}
 
 		return $condition;
-	}
-
-	/**
-	 * Assign attributes value by key
-	 * 
-	 * @param object 	$ctx 		Set context
-	 * @param array 	$attributes Attributes set
-	 * @param string 	$key 		Object real offset
-	 * @param string 	$offset  	Offset variable name
-	 * @param int    	$start 		Offset started from
-	 * @return void
-	 */
-	private static function attributeValueAssign($ctx, $attributes, $key, $offset, $start)
-	{
-		if($attributes) {
-			$attr = $attributes;
-
-			foreach(array_keys($attributes) as $attribute) {
-				preg_match_all('/[\@]\w+/', $attr[$attribute], $matches);
-
-				self::changeMatchingToken($ctx, $attr[$attribute], $matches, $key, $offset, $start);
-			}
-
-			return $attr;
-		}
-
-		return $attributes;
-	}
-
-	/**
-	 * Change matching token to value
-	 * 
-	 * @param object 	$ctx 		Set context
-	 * @param string 	&$tokenize	Pointer for tokenized string
-	 * @param array  	$matches 	Total matching tokens
-	 * @param string 	$key 		Object real offset
-	 * @param string 	$offset  	Offset variable name
-	 * @param int    	$start 		Offset started from
-	 * @return void
-	 */
-	private static function changeMatchingToken($ctx, &$tokenize, $matches, $key, $offset, $start)
-	{
-		if($matches && current($matches)) {
-			if($offset) {
-				$ctx[$offset] = abs($key + $start);
-			}
-
-			foreach ($matches[0] as $value) {
-				$value = self::hasToken($value);
-
-				if(isset($ctx[$value])) {
-					$tokenize = self::changeTokenToValue($value, $ctx[$value], $tokenize);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Replace token with actual value
-	 * 
-	 * @param string $token 	 	Token name without @
-	 * @param string $replace 	Token replaced with
-	 * @param string $value    Token replaced from
-	 * @return string
-	 */
-	private static function changeTokenToValue($token, $replace, $value)
-	{
-		return preg_replace('/(\@'.$token.')/', $replace, $value);
-	}
-
-	/**
-	 * Check value contains a key token
-	 * @token format exists or not
-	 * 
-	 * @param string  $value 		String that should contains token
-	 * @return bool
-	 */
-	private static function hasToken($value)
-	{
-		return preg_replace('/\@/', '', $value);
 	}
 
 	/**
