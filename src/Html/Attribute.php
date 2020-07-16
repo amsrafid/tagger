@@ -27,6 +27,58 @@ trait Attribute
 	}
 
 	/**
+	 * Change key and value to attribute format
+	 * 
+	 * @param string		$tag		Tag name
+	 * @param string		$key		Attribute name or sudo name
+	 * @param string		$attr		Attribute Value
+	 * @return string
+	 */
+	private static function attributeFormat($tag, $key, $attr)
+	{
+		$attributes = "";
+		$key = self::getAttributeMainName($key);
+
+		if(self::monitor($key)) {
+			$key = preg_replace(['/^(d-)/', '/^.*\_/', '/^.*\*/'], 'data-', $key);
+			$attributes .= ' ' . $key .' = "' . $attr .'"';
+		}
+		
+		return $attributes;
+	}
+
+	/**
+	 * Assign attributes value by key
+	 * 
+	 * @param object 	$ctx 				Set context
+	 * @param array 	$attributes Attributes set
+	 * @param string 	$key 				Object real offset
+	 * @param string 	$offset  		Offset variable name
+	 * @param int    	$start 			Offset started from
+	 * @return void
+	 */
+	private static function attributeValueAssign($ctx, $attributes, $key, $offset, $start)
+	{
+		if($attributes) {
+			$attr = $attributes;
+
+			foreach(array_keys($attributes) as $attribute) {
+				if(gettype($attr[$attribute]) == 'array') {
+					foreach($attr[$attribute] as $tag => $body) {
+						foreach($body as $i => $text)
+							self::distributeTokenized($ctx, $attr[$attribute][$tag][$i], $key, $offset, $start);
+					}
+				} else
+					self::distributeTokenized($ctx, $attr[$attribute], $key, $offset, $start);
+			}
+
+			return $attr;
+		}
+
+		return $attributes;
+	}
+
+	/**
 	 * Bind preset attributes with main attribute
 	 * 
 	 * @param string $tag 	Tag name
@@ -53,105 +105,14 @@ trait Attribute
 	}
 
 	/**
-	 * Change key and value to attribute format
-	 * 
-	 * @param string
-	 * @param string
-	 * @return string
-	 */
-	private static function attributeFormat($tag, $key, $attr)
-	{
-		$attributes = "";
-		$key = self::getAttributeMainName($key);
-
-		if(self::monitor($key)) {
-			$key = preg_replace(['/^(d-)/', '/^.*\_/', '/^.*\*/'], 'data-', $key);
-			$attributes .= ' ' . $key .' = "' . $attr .'"';
-		}
-		
-		return $attributes;
-	}
-
-	/**
-	 * Monitoring that the attribute is already used
-	 * 
-	 * @param string $key attribute name
-	 * @return bool
-	 */
-	private static function monitor($key)
-	{
-		$key = self::getAttributeMainName($key);
-		
-		if(! \in_array($key, self::$appends)) {
-			self::$appends [] = $key;
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check key has sudo or not
-	 * 
-	 * @param string $key 	Attribute sudo name
-	 * @return string
-	 */
-	private static function getAttributeMainName($key)
-	{
-		return isset(self::$sudo[$key]) ? self::$sudo[$key] : $key;
-	}
-
-	
-	/**
-	 * Assign attributes value by key
-	 * 
-	 * @param object 	$ctx 		Set context
-	 * @param array 	$attributes Attributes set
-	 * @param string 	$key 		Object real offset
-	 * @param string 	$offset  	Offset variable name
-	 * @param int    	$start 		Offset started from
-	 * @return void
-	 */
-	private static function attributeValueAssign($ctx, $attributes, $key, $offset, $start)
-	{
-		if($attributes) {
-			$attr = $attributes;
-
-			foreach(array_keys($attributes) as $attribute) {
-				if(gettype($attr[$attribute]) == 'array') {
-					foreach($attr[$attribute] as $tag => $body) {
-						foreach($body as $i => $text)
-							self::distributeTokenized($ctx, $attr[$attribute][$tag][$i], $key, $offset, $start);
-					}
-				} else
-					self::distributeTokenized($ctx, $attr[$attribute], $key, $offset, $start);
-			}
-
-			return $attr;
-		}
-
-		return $attributes;
-	}
-
-	/**
-	 * 
-	 */
-	private static function distributeTokenized($ctx, &$tokenize, $key, $offset, $start)
-	{
-		preg_match_all('/[\@]\w+/', $tokenize, $matches);
-		self::changeMatchingToken($ctx, $tokenize, $matches, $key, $offset, $start);
-	}
-
-	/**
 	 * Change matching token to value
 	 * 
-	 * @param object 	$ctx 		Set context
+	 * @param object 	$ctx 				Set context
 	 * @param string 	&$tokenize	Pointer for tokenized string
-	 * @param array  	$matches 	Total matching tokens
-	 * @param string 	$key 		Object real offset
-	 * @param string 	$offset  	Offset variable name
-	 * @param int    	$start 		Offset started from
+	 * @param array  	$matches 		Total matching tokens
+	 * @param string 	$key 				Object real offset
+	 * @param string 	$offset  		Offset variable name
+	 * @param int    	$start 			Offset started from
 	 * @return void
 	 */
 	private static function changeMatchingToken($ctx, &$tokenize, $matches, $key, $offset, $start)
@@ -210,6 +171,33 @@ trait Attribute
 	}
 
 	/**
+	 * Pass to change by mach with token
+	 * 
+	 * @param object 	$ctx 				Set context
+	 * @param string 	&$tokenize	Pointer for tokenized string
+	 * @param string 	$key 				Object real offset
+	 * @param string 	$offset  		Offset variable name
+	 * @param int    	$start 			Offset started from
+	 * @return void
+	 */
+	private static function distributeTokenized($ctx, &$tokenize, $key, $offset, $start)
+	{
+		preg_match_all('/[\@]\w+/', $tokenize, $matches);
+		self::changeMatchingToken($ctx, $tokenize, $matches, $key, $offset, $start);
+	}
+
+	/**
+	 * Check key has sudo or not
+	 * 
+	 * @param string $key 	Attribute sudo name
+	 * @return string
+	 */
+	private static function getAttributeMainName($key)
+	{
+		return isset(self::$sudo[$key]) ? self::$sudo[$key] : $key;
+	}
+
+	/**
 	 * Check value contains a key token
 	 * @token format exists or not
 	 * 
@@ -219,5 +207,24 @@ trait Attribute
 	private static function hasToken($value)
 	{
 		return preg_replace('/\@/', '', $value);
+	}
+	
+	/**
+	 * Monitoring that the attribute is already used
+	 * 
+	 * @param string $key attribute name
+	 * @return bool
+	 */
+	private static function monitor($key)
+	{
+		$key = self::getAttributeMainName($key);
+		
+		if(! \in_array($key, self::$appends)) {
+			self::$appends [] = $key;
+
+			return true;
+		}
+
+		return false;
 	}
 }
