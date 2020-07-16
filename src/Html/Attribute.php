@@ -7,25 +7,6 @@ trait Attribute
 	use Credentials;
 
 	/**
-	* Convert data to attributes format
-	*
-	* @param string $attr        Attributes credential
-	* @param string $expression  Form to expression or single
-	* @return string
-	*/
-	private static function attrFormat($attr, $attributes, $expression = true)
-	{
-		if(isset($attributes[$attr])) {
-			if($expression)
-				return " {$attr} = '".$attributes[$attr]."'";
-			
-			return $attributes[$attr];
-		}
-
-		return $attr. "*";
-	}
-
-	/**
 	 * Check attributes existing or format
 	 * 
 	 * @param string  $tag  Tag name
@@ -223,7 +204,6 @@ trait Attribute
 			}
 
 			$attributes['body'] = false;
-			/* return $attributes; */
 		}
 		
 		return $attributes;

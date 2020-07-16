@@ -31,34 +31,6 @@ class Tag
 	public static $preset = [];
 
 	/**
-	 * Find any attribute by inner origin name
-	 *	from view given list 
-	 * 
-	 * @param string $name 	inner atribute name
-	 * @return string
-	 */
-	private static function any ($name, $attributes, $expression = true)
-	{
-		$format = "";
-
-		if(isset(self::$attrs[$name])) {
-			foreach (self::$attrs[$name]['set'] as $i => $attr) {
-				$attrFin = self::attrFormat($attr, $attributes, $expression);
-
-				if($attrFin && self::monitor($attr)) {
-					if(isset(self::$attrs[$name]['both']) && self::$attrs[$name]['both'])
-						$format .= $attrFin;
-					else {
-						return $attrFin;
-					}
-				}
-			}
-		}
-
-		return $format;
-	}
-
-	/**
 	 * Buld new Attribute
 	 * 
 	 * @param string $tag         Tag name
@@ -192,7 +164,12 @@ class Tag
 	 */
 	public static function set($value = [])
 	{
-		self::$preset = $value;
+		if(self::$preset) {
+			foreach($value as $key => $val) {
+				self::$preset[$key] = $val;
+			}
+		} else
+			self::$preset = $value;
 	}
 
 	/**
