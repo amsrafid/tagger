@@ -48,6 +48,7 @@ trait Credentials
 		'cls' => 'class',
 		'cont' => 'content',
 		'i'  => 'id',
+		'ln' => 'lang',
 		'n'  => 'name',
 		'p'  => 'placeholder',
 		's'  => 'src',

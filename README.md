@@ -1,4 +1,5 @@
-# HTML Tag generator
+# HTML Tag
+	One of the most flexible view builder for php.
 
 # Basic use
 
@@ -10,18 +11,21 @@ Html\Tag::{'Tag name'}([
 ]);
 ~~~
 
-# Sudo attributes is available
+## Sudo attributes is available
 
 ~~~
-a -> alt
-c/cls -> class
-cont -> content
-i  -> id
-n  -> name
-p  -> placeholder
-s  -> src
-st  -> style
-v/val -> value
+'a' => 'alt',
+'c' => 'class',
+'cls' => 'class',
+'cont' => 'content',
+'i'  => 'id',
+'ln' => 'lang',
+'n'  => 'name',
+'p'  => 'placeholder',
+'s'  => 'src',
+'st'  => 'style',
+'v' => 'value',
+'val' => 'value'
 ...
 ~~~
 
@@ -46,20 +50,35 @@ Tag::input(['type' => 'text'])
 Tag::stopSet();
 ~~~
 
+# Special use
+
+## Table
+Html table is able to be generated dynamically. Where, body can be passed an array with key as tag name and key value a normal array for tag body.
+
+~~~
+$arrs = [
+	['age' => 24, 'name' => 'Amsrafid'],
+	['age' => 33, 'name' => 'Sadman Rafid']
+];
+	
+Tag::table(['border' => '1', 'b' => function() use($arrs) {
+	Tag::tr(['b' => ['th' => ['#', 'Age', 'Name']]]);
+	Tag::tr(['foreach' => $arrs, 'offset' => 'i', 'start' => 1, 'b' => [
+			'td' => ['@i', '@age', '@name']
+		]
+	]);
+}]);
+~~~
 
 ## Control statement
 As like normal control statement foreach/if/elseif/else. Control statements uses as attributes.
 
-### for
+### foreach:
+Act like normal foreach in php. Here, 'offset', 'start' used for loop array/object affset, and from which value offset count will be started.
 
 ~~~
-$arrs = [
-	['id' => 24, 'name' => 'Amsrafid'],
-	['id' => 33, 'name' => 'Sadman Rafid']
-];
-
 Tag::ul(['if' => $arrs, 'b' => function() use($arrs) {
-	Tag::li(['foreach' => $arrs, 'v' => '@id', 'b' => '@i. @name']);
+	Tag::li(['foreach' => $arrs, 'offset' => 'i' 'v' => '@id', 'b' => '@i. @name']);
 }]);
 <!--
 	@id -> @{array key name}.
@@ -67,7 +86,8 @@ Tag::ul(['if' => $arrs, 'b' => function() use($arrs) {
 -->
 ~~~
 
-### if
+### if:
+Normal if statement like php
 
 ~~~
 $var = 10;
@@ -80,7 +100,8 @@ Tag::span(['if' => $var > 10, 'b' => 'Var is greated than 10']);
 -->
 ~~~
 
-### elseif
+### elseif:
+Normal elseif statement like php. Here, this condition will only work iff if statment is present before this.
 
 ~~~
 Tag::span(['elseif' => $var > 5, 'b' => 'Var is greated than 5']);
@@ -93,7 +114,8 @@ Tag::span(['elseif' => $var > 5, 'b' => 'Var is greated than 5']);
 -->
 ~~~
 
-### else
+### else:
+Normal else statement like php. Value will be anything eccept false. Here, this condition will only work iff if or elseif statment is present before this.
 
 ~~~
 Tag::span(['else' => true, 'b' => 'Var is less than 5']);

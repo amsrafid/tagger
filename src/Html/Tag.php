@@ -37,19 +37,20 @@ class Tag
 	 * @param string $name 	inner atribute name
 	 * @return string
 	 */
-	private static function any ($name, $expression = true)
+	private static function any ($name, $attributes, $expression = true)
 	{
 		$format = "";
 
 		if(isset(self::$attrs[$name])) {
 			foreach (self::$attrs[$name]['set'] as $i => $attr) {
-				$attrFin = self::attrFormat($attr, $expression);
+				$attrFin = self::attrFormat($attr, $attributes, $expression);
 
 				if($attrFin && self::monitor($attr)) {
 					if(isset(self::$attrs[$name]['both']) && self::$attrs[$name]['both'])
 						$format .= $attrFin;
-					else
+					else {
 						return $attrFin;
+					}
 				}
 			}
 		}
@@ -69,14 +70,15 @@ class Tag
 		self::$appends = [];
 		self::$attributes = self::discoverBody($attributes);
 
-		$body = self::any('tag_body', false);
+		$body = self::$attributes['body'];
+		unset(self::$attributes['body']);
 
-		if($body && ! in_array($tag, self::$single)) {
+		if(($body || $body == '0') && ! in_array($tag, self::$single)) {
 			?><<?= "{$tag}" ?><?= self::attributes($tag) ?>><?= (gettype($body) == 'object')
 				? $body(new self)
-				: (gettype($body) == 'array'
+				: ((gettype($body) == 'array')
 					? self::multiLevelTag($body)
-					: (gettype($body) == 'boolean' && $body ? "": $body)
+					: (gettype($body) == 'boolean' && $body ? "" : $body)
 				) ?></<?= $tag ?>><?php
 		} else {
 			?><<?= "{$tag}" ?><?= self::attributes($tag) ?> /><?php
@@ -138,7 +140,7 @@ class Tag
 		if($set = ControlStatement::match(array_keys($attributes)))
 			return ControlStatement::handle($tag, $attributes, $set);
 
-		return self::build($tag, $attributes);
+		return Tag::build($tag, $attributes);
 	}
 
 	/**
@@ -170,7 +172,7 @@ class Tag
 		if($body) {
 			foreach($body as $tag => $text) {
 				foreach($text as $txt)
-					self::{$tag}($txt);
+					Tag::{$tag}($txt);
 			}
 		}
 	}

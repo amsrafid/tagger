@@ -13,16 +13,16 @@ trait Attribute
 	* @param string $expression  Form to expression or single
 	* @return string
 	*/
-	private static function attrFormat($attr, $expression = true)
+	private static function attrFormat($attr, $attributes, $expression = true)
 	{
-		if(isset(self::$attributes[$attr])) {
+		if(isset($attributes[$attr])) {
 			if($expression)
-				return " {$attr} = '".self::$attributes[$attr]."'";
+				return " {$attr} = '".$attributes[$attr]."'";
 			
-			return self::$attributes[$attr];
+			return $attributes[$attr];
 		}
 
-		return "";
+		return $attr. "*";
 	}
 
 	/**
@@ -140,8 +140,8 @@ trait Attribute
 			foreach(array_keys($attributes) as $attribute) {
 				if(gettype($attr[$attribute]) == 'array') {
 					foreach($attr[$attribute] as $tag => $body) {
-						foreach($body as $key => $text)
-							self::distributeTokenized($ctx, $attr[$attribute][$tag][$key], $key, $offset, $start);
+						foreach($body as $i => $text)
+							self::distributeTokenized($ctx, $attr[$attribute][$tag][$i], $key, $offset, $start);
 					}
 				} else
 					self::distributeTokenized($ctx, $attr[$attribute], $key, $offset, $start);
@@ -213,7 +213,7 @@ trait Attribute
 	{
 		if(empty($attributes['body'])) {
 			foreach(self::$attrs['tag_body']['set'] as $set) {
-				if(! empty($attributes[$set])) {
+				if(isset($attributes[$set])) {
 					$body = $attributes[$set];
 					unset($attributes[$set]);
 
@@ -221,6 +221,9 @@ trait Attribute
 					return $attributes;
 				}
 			}
+
+			$attributes['body'] = false;
+			/* return $attributes; */
 		}
 		
 		return $attributes;
