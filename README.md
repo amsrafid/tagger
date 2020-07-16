@@ -2,10 +2,14 @@
 	One of the most flexible view builder for php.
 
 # Basic use
+Very easy to use. Attribute and tag name is same as normal html.
+Most notable fact is that sudo or short name is also work as normal HTML attributes.
 
 ~~~
 Html\Tag::{'Tag name'}([
-	b/body/t/txt/text => string|bool|function(){}		<!-- Tag Body -->
+	'i/id' => 'id-name',
+	'c/cls/class' => 'class-name',
+	b/body/t/txt/text => string|array|number|bool|function(){}		<!-- Tag Body -->
 	...
 	Attribute name as array key and value as key value
 ]);
