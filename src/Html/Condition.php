@@ -6,11 +6,18 @@ namespace Html;
  * Condition Handler
  * 
  * @method public  static bool 		 	match($condition)
- * @method private static bool 		 	overloadOperator($cond_left, $operator, $cond_right)
- * @method private static string|number trimSpecialCharFromMatch($match, $offset)
  */
 class Condition
 {
+	/**
+	 * Final condition validation to return a single boolean value
+	 * 
+	 * @param string	$condition			Condition string	[De Morgan's logical stripe]
+	 * @param array 	$bracketSet			Brackets position set
+	 * @param int 		$leftPosition		String initial position
+	 * @param int 		$rightPosition	String final position
+	 * @return bool
+	 */
 	private static function conditionValidate($condition, $bracketSet, $leftPosition, $rightPosition)
 	{
 		$bracketOut = [];
@@ -42,6 +49,12 @@ class Condition
 		return self::replaceConditionals(implode('', $bracketOut));
 	}
 
+	/**
+	 * Simplify and replace AND|OR condition to single Boolean value
+	 * 
+	 * @param string $string	De Morgan's stripe
+	 * @return boolean
+	 */
 	private static function replaceConditionals($string)
 	{
 		$planeSet = [];
@@ -62,7 +75,7 @@ class Condition
 	 * Match condition from string
 	 * 
 	 * @param string $condition
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function match ($condition)
 	{
@@ -101,60 +114,50 @@ class Condition
 	 * @param string $cond_left 	Left value
 	 * @param string $operator 		Conditional operator
 	 * @param string $cond_right 	Right value
-	 * @return bool
+	 * @return boolean
 	 */
 	private static function overloadOperator($cond_left, $operator, $cond_right)
 	{
 		switch($operator){
-	        case '<':
-	            return($cond_left < $cond_right);
-	            break;
-	        case '<=':
-	            return($cond_left <= $cond_right);
-	            break;
-	        case '>':
-	            return($cond_left > $cond_right);
-	            break;
-	        case '>=':
-	            return($cond_left >= $cond_right);
-	            break;
-	        case '==':
-	            return($cond_left == $cond_right);
-	            break;	        
-	        case '===':
-	            return($cond_left === $cond_right);
-	            break;
-	        case '!=':
-	            return($cond_left != $cond_right);
-	            break;
-	        case '!==':
-	            return($cond_left !== $cond_right);
-	            break;
-	        case '<>':
-	            return($cond_left <> $cond_right);
-	            break;
-	        default:
-	            throw new \Exception("'{$operator}' is not a valid conditional operator");
-	            break;
-	    }
+			case '<':
+				return ($cond_left < $cond_right);
+				break;
+			case '<=':
+				return ($cond_left <= $cond_right);
+				break;
+			case '>':
+				return ($cond_left > $cond_right);
+				break;
+			case '>=':
+				return ($cond_left >= $cond_right);
+				break;
+			case '==':
+				return ($cond_left == $cond_right);
+				break;	        
+			case '===':
+				return ($cond_left === $cond_right);
+				break;
+			case '!=':
+				return ($cond_left != $cond_right);
+				break;
+			case '!==':
+				return ($cond_left !== $cond_right);
+				break;
+			case '<>':
+				return ($cond_left <> $cond_right);
+				break;
+			default:
+				throw new \Exception("'{$operator}' is not a valid conditional operator");
+				break;
+	  }
 	}
 
 	/**
-	 * Trim a condition by special character
-	 * Like $, () etc.
+	 * Simplify condition to a single De Morgan's logical stripe
 	 * 
-	 * @param string $match  	Matching set
-	 * @param string $offset 	Matching offset
-	 * @return string|number
+	 * @param string $condition		Condition string
+	 * @return string
 	 */
-	private static function trimSpecialCharFromMatch($match, $offset)
-	{
-		if (isset($match[1]))
-			return trim(str_replace(['$','()'],'', $match[$offset]));
-
-		throw new \Exception("Conditional statement must need three parts with ({left value} {operator} {right value}) format");
-	}
-
 	private static function simplifyCondition($condition)
 	{
 		$simplified = [];
@@ -163,7 +166,7 @@ class Condition
 		$firstPosition = 0;
 
 		for ($i = 0; $i < strlen($condition); $i++) {
-			if(preg_match('/[a-zA-Z0-9!=<>]/', $condition[$i])) {
+			if(preg_match('/[a-zA-Z0-9_!=<>]/', $condition[$i])) {
 				$perCondition[$position] .= $condition[$i];
 				$firstPosition = $perCondition[0] ? $firstPosition : $i;
 			} else if ($perCondition[0] != "" &&
@@ -174,7 +177,12 @@ class Condition
 			}
 
 			if($position > 2 || ($i == strlen($condition) - 1)) {
-				$simplified [] = self::overloadOperator($perCondition[0], $perCondition[1], $perCondition[2]) ? 1 : 0;
+				$simplified [] = self::overloadOperator(
+					$perCondition[0],
+					$perCondition[1],
+					$perCondition[2]
+				) ? 1 : 0;
+
 				$perCondition = ['', '', ''];
 				$position = 0;
 				$firstPosition = 0;
@@ -191,6 +199,6 @@ class Condition
 		if($simplified)
 			return \implode('', $simplified);
 
-		throw new \Exception("Condition pattern '".$condition."' is mismatched.");
+		throw new \Exception("Condition pattern '{$condition}' is not valid.");
 	}
 }
