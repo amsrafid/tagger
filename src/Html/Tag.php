@@ -1,9 +1,16 @@
 <?php
+
 namespace Html;
 
 /*
  * Html tag builder class
  * 
+ * @method public static Html\Tag 		build($tag, $attributes)
+ * @method public static Html\comment comment($value = '')
+ * @method public static Html\Tag 		doctype($value = 'html')
+ * @method public static void 				multiLevelTag()
+ * @method public static void 				set($value = [])
+ * @method public static void 				stopSet()
  */
 class Tag
 {

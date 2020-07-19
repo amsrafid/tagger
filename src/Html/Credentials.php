@@ -1,4 +1,5 @@
 <?php
+
 namespace Html;
 
 trait Credentials
@@ -11,7 +12,7 @@ trait Credentials
 	 */
 	private static $attrs = [
 		'tag_body' => [
-			'set' => ['body', 'txt', 'text', 'b']
+			'set' => ['b', 'body', 'txt', 'text']
 		]
 	];
 

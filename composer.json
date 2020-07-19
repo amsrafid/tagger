@@ -1,15 +1,18 @@
 {
-    "name": "amsrafid/html-tag",
-    "description": "Great tool to genarate HTML tags with attributes.",
-    "type": "library",
+    "name": "amsrafid/html",
+    "description": "Great view builder for php with inbuilt control statment.",
+    "keywords": ["amsrafid", "html", "markup", "tag", "attribute", "view"],
     "license": "MIT",
+    "type": "library",
     "authors": [
         {
-            "name": "amsrafid",
+            "name": "A M Sadman Rafid",
             "email": "amsrafid@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": "^5.6 || ^7.0"
+    },
     "autoload": {
         "psr-4": {
             "Html\\" : "src/Html"
