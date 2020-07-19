@@ -18,7 +18,7 @@ trait Attribute
 		$attributes = self::bindedAttributes($tag);
 
 		if($attributes) {
-			foreach($attributes as $key => $attr) {
+			foreach($attributes as $key => $attr) {/* 	echo " ". gettype($attr); */
 				$attrString .= self::attributeFormat($tag, $key, $attr);
 			}
 		}
@@ -41,7 +41,11 @@ trait Attribute
 
 		if(self::monitor($key)) {
 			$key = preg_replace(['/^(d-)/', '/^.*\_/', '/^.*\*/'], 'data-', $key);
-			$attributes .= ' ' . $key .' = "' . $attr .'"';
+			$attributes .= ' ' . $key . (
+				(gettype($attr) == 'boolean' && $attr)
+					? ''
+					: ' = "' . $attr .'"'
+			);
 		}
 		
 		return $attributes;
@@ -66,10 +70,10 @@ trait Attribute
 				if(gettype($attr[$attribute]) == 'array') {
 					foreach($attr[$attribute] as $tag => $body) {
 						foreach($body as $i => $text)
-							self::distributeTokenized($ctx, $attr[$attribute][$tag][$i], $key, $offset, $start);
+							self::distributeToTokenized($ctx, $attr[$attribute][$tag][$i], $key, $offset, $start);
 					}
 				} else
-					self::distributeTokenized($ctx, $attr[$attribute], $key, $offset, $start);
+					self::distributeToTokenized($ctx, $attr[$attribute], $key, $offset, $start);
 			}
 
 			return $attr;
@@ -180,7 +184,7 @@ trait Attribute
 	 * @param int    	$start 			Offset started from
 	 * @return void
 	 */
-	private static function distributeTokenized($ctx, &$tokenize, $key, $offset, $start)
+	private static function distributeToTokenized($ctx, &$tokenize, $key, $offset, $start)
 	{
 		preg_match_all('/[\@]\w+/', $tokenize, $matches);
 		self::changeMatchingToken($ctx, $tokenize, $matches, $key, $offset, $start);
