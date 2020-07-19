@@ -11,7 +11,7 @@ trait Credentials
 	 */
 	private static $attrs = [
 		'tag_body' => [
-			'set' => ['body', 'txt', 'text', 't', 'b']
+			'set' => ['body', 'txt', 'text', 'b']
 		]
 	];
 
@@ -44,15 +44,35 @@ trait Credentials
 	 */
 	public static $sudo = [
 		'a' => 'alt',
+		'af' => 'autofocus',
 		'c' => 'class',
 		'cls' => 'class',
 		'cont' => 'content',
+		'cs' => 'colspan',
+		'd' => 'data',
+		'da' => 'disabled',
+		'dt' => 'datetime',
+		'f' => 'for',
+		'fa' => 'formaction',
+		'h' => 'href',
 		'i'  => 'id',
 		'ln' => 'lang',
+		'm' => 'method',
+		'mx' => 'max',
+		'mn' => 'min',
+		'mxlen' => 'maxlength',
+		'mnlen' => 'minlength',
+		'mt' => 'muted',
 		'n'  => 'name',
 		'p'  => 'placeholder',
+		'pt'  => 'pattern',
+		'r' => 'required',
+		'rs' => 'rowspan',
+		'rw' => 'rows',
 		's'  => 'src',
+		'sc'  => 'selected',
 		'st'  => 'style',
+		't'  => 'type',
 		'v' => 'value',
 		'val' => 'value'
 	];

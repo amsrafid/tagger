@@ -9,7 +9,7 @@ Most notable fact is that sudo or short name is also work as normal HTML attribu
 Html\Tag::{'Tag name'}([
 	'i/id' => 'id-name',
 	'c/cls/class' => 'class-name',
-	b/body/t/txt/text => string|array|number|bool|function(){}		<!-- Tag Body -->
+	b/body/txt/text => string|array|number|bool|function(){}		<!-- Tag Body -->
 	...
 	Attribute name as array key and value as key value
 ]);
@@ -18,19 +18,37 @@ Html\Tag::{'Tag name'}([
 ## Sudo attributes is available
 
 ~~~
-'a' => 'alt',
-'c' => 'class',
-'cls' => 'class',
-'cont' => 'content',
-'i'  => 'id',
-'ln' => 'lang',
-'n'  => 'name',
-'p'  => 'placeholder',
-'s'  => 'src',
-'st'  => 'style',
-'v' => 'value',
-'val' => 'value'
-...
+a = alt,
+c = class,
+cls = class,
+cont = content,
+cs = colspan,
+d = data,
+da = disabled,
+dt = datetime,
+f = for,
+fa = formaction,
+h = href,
+i  = id,
+ln = lang,
+m = method,
+mx = max,
+mn = min,
+mxlen = maxlength,
+mnlen = minlength,
+mt = muted,
+n  = name,
+p  = placeholder,
+pt  = pattern,
+r = required,
+rs = rowspan,
+rw = rows,
+s  = src,
+sc  = selected,
+st  = style,
+t  = type,
+v = value,
+val = value
 ~~~
 
 ## Preset attributes for identical tag
@@ -98,9 +116,9 @@ $var = 10;
 
 Tag::span(['if' => $var > 10, 'b' => 'Var is greated than 10']);
 <!-- 
-	Normal use:
-	if($var > 0)
-		echo "<span>Var is greated than 10</span>
+Normal use:
+if($var > 0)
+	echo "<span>Var is greated than 10</span>
 -->
 ~~~
 
@@ -110,11 +128,11 @@ Normal elseif statement like php. Here, this condition will only work iff if sta
 ~~~
 Tag::span(['elseif' => $var > 5, 'b' => 'Var is greated than 5']);
 <!-- 
-	Normal use:
-	if ($var > 10)
-		echo "<span>Var is greated than 10</span>
-	else if ($var > 5)
-		echo "<span>Var is greated than 5</span>
+Normal use:
+if ($var > 10)
+	...
+else if ($var > 5)
+	echo "<span>Var is greated than 5</span>
 -->
 ~~~
 
@@ -124,12 +142,10 @@ Normal else statement like php. Value will be anything eccept false. Here, this 
 ~~~
 Tag::span(['else' => true, 'b' => 'Var is less than 5']);
 <!-- 
-	Normal use:	
-	if ($var > 10)
-		echo "<span>Var is greated than 10</span>
-	else if ($var > 5)
-		echo "<span>Var is greated than 5</span>
-	else
-		echo "<span>Var is less than 5</span>
+Normal use:	
+if ($var > 10)
+	...
+else
+	echo "<span>Var is less than 5</span>
 -->
 ~~~
