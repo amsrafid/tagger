@@ -76,6 +76,7 @@ class ControlStatement implements ControlStatementBinding
 
 		$offset = $start = 0;
 		$condition = true;
+		$then = [];
 
 		if(isset($attributes['offset'])) {
 			$offset = $attributes['offset'];
@@ -87,12 +88,26 @@ class ControlStatement implements ControlStatementBinding
 		}
 		if (isset($attributes['if'])) {
 			$condition = $attributes['if'];
+			unset($attributes['if']);
+		}
+		if (isset($attributes['then'])) {
+			$then = $attributes['then'];
+			unset($attributes['then']);
 		}
 		
 		if($object) {
 			foreach($object as $key => $obj) {
-				if(self::checkConditionals($obj, $condition, $key,  $offset, $start)){
-					Tag::{$tag}(self::attributeValueAssign($obj, $attributes, $key, $offset, $start));
+				if($then) {
+					$attrThen = $attributes;
+					if(self::checkConditionals($obj, $condition, $key,  $offset, $start)){
+						$attrThen = array_merge($attributes, $then);
+					}
+					
+					Tag::{$tag}(self::attributeValueAssign($obj, $attrThen, $key, $offset, $start));
+				} else {
+					if(self::checkConditionals($obj, $condition, $key,  $offset, $start)){
+						Tag::{$tag}(self::attributeValueAssign($obj, $attributes, $key, $offset, $start));
+					}
 				}
 			}
 		}
