@@ -61,7 +61,7 @@ trait Attribute
 	 * @param int    	$start 			Offset started from
 	 * @return void
 	 */
-	private static function attributeValueAssign($ctx, $attributes, $key, $offset, $start)
+	private static function attributeValueAssign($ctx, $attributes, $key, $offset/* , $start */)
 	{
 		if($attributes) {
 			$attr = $attributes;
@@ -70,10 +70,10 @@ trait Attribute
 				if(gettype($attr[$attribute]) == 'array') {
 					foreach($attr[$attribute] as $tag => $body) {
 						foreach($body as $i => $text)
-							self::distributeToTokenized($ctx, $attr[$attribute][$tag][$i], $key, $offset, $start);
+							self::distributeToTokenized($ctx, $attr[$attribute][$tag][$i], $key, $offset/* , $start */);
 					}
 				} else
-					self::distributeToTokenized($ctx, $attr[$attribute], $key, $offset, $start);
+					self::distributeToTokenized($ctx, $attr[$attribute], $key, $offset/* , $start */);
 			}
 
 			return $attr;
@@ -119,11 +119,11 @@ trait Attribute
 	 * @param int    	$start 			Offset started from
 	 * @return void
 	 */
-	private static function changeMatchingToken($ctx, &$tokenize, $matches, $key, $offset, $start)
+	private static function changeMatchingToken($ctx, &$tokenize, $matches, $key, $offset/* , $start */)
 	{
 		if($matches && current($matches)) {
 			if($offset) {
-				$ctx[$offset] = abs($key + $start);
+				$ctx[$offset] = abs($key/*  + $start */);
 			}
 
 			foreach ($matches[0] as $value) {
@@ -184,10 +184,10 @@ trait Attribute
 	 * @param int    	$start 			Offset started from
 	 * @return void
 	 */
-	private static function distributeToTokenized($ctx, &$tokenize, $key, $offset, $start)
+	private static function distributeToTokenized($ctx, &$tokenize, $key, $offset/* , $start */)
 	{
 		preg_match_all('/[\@]\w+/', $tokenize, $matches);
-		self::changeMatchingToken($ctx, $tokenize, $matches, $key, $offset, $start);
+		self::changeMatchingToken($ctx, $tokenize, $matches, $key, $offset/* , $start */);
 	}
 
 	/**

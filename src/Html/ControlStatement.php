@@ -74,7 +74,7 @@ class ControlStatement implements ControlStatementBinding
 		$object = $attributes['foreach'];
 		unset($attributes['foreach']);
 
-		$offset = $start = 0;
+		$count = $offset = $start = 0;
 		$condition = true;
 		$then = [];
 
@@ -84,6 +84,7 @@ class ControlStatement implements ControlStatementBinding
 			if(isset($attributes['start'])) {
 				$start = $attributes['start'];
 				unset($attributes['start']);
+				$count = $start - 1;
 			}
 		}
 		if (isset($attributes['if'])) {
@@ -99,14 +100,15 @@ class ControlStatement implements ControlStatementBinding
 			foreach($object as $key => $obj) {
 				if($then) {
 					$attrThen = $attributes;
-					if(self::checkConditionals($obj, $condition, $key,  $offset, $start)){
+					if(self::checkConditionals($obj, $condition, $key,  $offset/* , $start */)){
 						$attrThen = array_merge($attributes, $then);
 					}
-					
-					Tag::{$tag}(self::attributeValueAssign($obj, $attrThen, $key, $offset, $start));
+					$count++;
+					Tag::{$tag}(self::attributeValueAssign($obj, $attrThen, $count, $offset/* , $start */));
 				} else {
-					if(self::checkConditionals($obj, $condition, $key,  $offset, $start)){
-						Tag::{$tag}(self::attributeValueAssign($obj, $attributes, $key, $offset, $start));
+					if(self::checkConditionals($obj, $condition, $key,  $offset/* , $start */)){
+						$count++;
+						Tag::{$tag}(self::attributeValueAssign($obj, $attributes, $count, $offset/* , $start */));
 					}
 				}
 			}
@@ -125,11 +127,11 @@ class ControlStatement implements ControlStatementBinding
 	 * @param int    		$start 		Offset started from
 	 * @return void
 	 */
-	private static function checkConditionals($ctx, $condition, $key, $offset, $start)
+	private static function checkConditionals($ctx, $condition, $key, $offset/* , $start */)
 	{
 		if (gettype($condition) == 'string') {
 			preg_match_all('/[\@]\w+/', $condition, $matches);
-			self::changeMatchingToken($ctx, $condition, $matches, $key, $offset, $start);
+			self::changeMatchingToken($ctx, $condition, $matches, $key, $offset/* , $start */);
 
 			return Condition::match($condition);
 		}
