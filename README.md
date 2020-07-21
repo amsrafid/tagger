@@ -9,9 +9,9 @@ Most notable fact is that sudo or short name is also work as normal HTML attribu
 
 ~~~
 \Html\Tag::{Tag name}([
-	'i/id' => 'id-name',
-	'c/cls/class' => 'class-name',
-	'd-./_./*.' => 'data-value',
+	i/id => 'id-name',
+	c/cls/class => 'class-name',
+	d-./_./*./data-. => 'data-value',
 	b/body/txt/text => string|array|number|bool|function(){}		<!-- Tag Body -->
 	...
 	Attribute name as array key and value as key value
@@ -114,8 +114,8 @@ Tag::ul(['if' => $arrs, 'b' => function() use($arrs) {
 }]);
 
 <!--
-	@id -> @{array key name}.
-	Able to capture in any attributes value
+@id -> @{array key name}.
+Able to capture in any attributes value
 -->
 ~~~
 

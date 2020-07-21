@@ -164,12 +164,17 @@ class Condition
 		$position = 0;
 		$perCondition = ['', '', ''];
 		$firstPosition = 0;
+		$quote = true;
 
 		for ($i = 0; $i < strlen($condition); $i++) {
+			if(\in_array($condition[$i], ['"', "'"]))
+				$quote = $quote ? false : true;
+
 			if(preg_match('/[a-zA-Z0-9_!=<>]/', $condition[$i])) {
 				$perCondition[$position] .= $condition[$i];
 				$firstPosition = $perCondition[0] ? $firstPosition : $i;
-			} else if ($perCondition[0] != "" &&
+			} else if ($quote &&
+				$perCondition[0] != "" &&
 				(($condition[$i] == ' ') ||
 					(\in_array($condition[$i], [' ', ')']) && $position == 2))
 			) {
