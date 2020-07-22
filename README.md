@@ -13,47 +13,51 @@ Most notable fact is that sudo or short name is also work as normal HTML attribu
 	c/cls/class => 'class-name',
 	d-./_./*./data-. => 'data-value',
 	b/body/txt/text => string|array|number|bool|function(){}		<!-- Tag Body -->
+
 	...
-	Attribute name as array key and value as key value
-	Note: Data attribues is handled with sudo [d-name/_name/*name].
-	In all case, attribute name will be data-name.
+
+	<!--
+		Attribute name as array key and value as key value
+		Note: Data attribues is handled with sudo [d-name/_name/*name].
+		In all case, attribute name will be data-name.
+	-->
 ]);
 ~~~
 
 ## Sudo attributes is available
 
 ~~~
-a 		= alt,
-c 		= class,
-cls 	= class,
-cont 	= content,
-cs 		= colspan,
-d 		= data,
-da 		= disabled,
-dt 		= datetime,
-f 		= for,
-fa 		= formaction,
-h 		= href,
-i  		= id,
-ln 		= lang,
-m 		= method,
-mx 		= max,
-mn 		= min,
-mxlen = maxlength,
-mnlen = minlength,
-mt 		= muted,
-n  		= name,
-p  		= placeholder,
-pt  	= pattern,
-r 		= required,
-rs 		= rowspan,
-rw 		= rows,
-s  		= src,
-sc  	= selected,
-st  	= style,
-t  		= type,
-v 		= value,
-val 	= value
+a 		=		alt,
+c 		=		class,
+cls		=		class,
+cont	=		content,
+cs 		=		colspan,
+d 		=		data,
+da 		=		disabled,
+dt 		=		datetime,
+f 		=		for,
+fa 		=		formaction,
+h 		=		href,
+i  		=		id,
+ln 		=		lang,
+m 		=		method,
+mx 		=		max,
+mn 		=		min,
+mxlen	=		maxlength,
+mnlen	=		minlength,
+mt 		=		muted,
+n  		=		name,
+p  		=		placeholder,
+pt		=		pattern,
+r 		=		required,
+rs 		=		rowspan,
+rw 		=		rows,
+s  		=		src,
+sc		=		selected,
+st		=		style,
+t  		=		type,
+v 		=		value,
+val		=		value
 ~~~
 
 ## Preset attributes for identical tag
@@ -114,8 +118,23 @@ Tag::ul(['if' => $arrs, 'b' => function() use($arrs) {
 }]);
 
 <!--
-@id -> @{array key name}.
-Able to capture in any attributes value
+	@id -> @{array key name}.
+	Able to capture in any attributes value
+
+	Special Attributes:
+
+	'if' => string
+		Normal if condition. Ex: (@i > 2 && (@age == 50 || '@name' == 'HTML')).
+		Here, @i is offset, @name is array key.
+		Note: @name value is string type. So '@name' is binded with quotes.
+		On the other hand, @age value is integer type. So, quote is not required.
+
+	'offset' => string
+		Loop array offset.
+		In logical expression, consided to be started form 0 and in view depends on start attribute. 
+
+	'start' => int
+		From where body/view offset will be started from. DEFAULT 1
 -->
 ~~~
 
@@ -129,9 +148,9 @@ $var = 10;
 Tag::span(['if' => $var > 10, 'b' => 'Var is greated than 10']);
 
 <!-- 
-Normal use:
-if($var > 0)
-	echo "<span>Var is greated than 10</span>
+	Normal use:
+	if($var > 0)
+		echo "<span>Var is greated than 10</span>
 -->
 ~~~
 
@@ -143,11 +162,11 @@ Normal elseif statement like php. Here, this condition will only work iff if sta
 Tag::span(['elseif' => $var > 5, 'b' => 'Var is greated than 5']);
 
 <!-- 
-Normal use:
-if ($var > 10)
-	...
-else if ($var > 5)
-	echo "<span>Var is greated than 5</span>
+	Normal use:
+	if ($var > 10)
+		...
+	else if ($var > 5)
+		echo "<span>Var is greated than 5</span>
 -->
 ~~~
 
@@ -159,11 +178,11 @@ Normal else statement like php. Value will be anything eccept false. Here, this 
 Tag::span(['else' => true, 'b' => 'Var is less than 5']);
 
 <!-- 
-Normal use:	
-if ($var > 10)
-	...
-else
-	echo "<span>Var is less than 5</span>
+	Normal use:	
+	if ($var > 10)
+		...
+	else
+		echo "<span>Var is less than 5</span>
 -->
 ~~~
 
