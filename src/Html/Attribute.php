@@ -18,7 +18,7 @@ trait Attribute
 		$attributes = self::bindedAttributes($tag);
 
 		if($attributes) {
-			foreach($attributes as $key => $attr) {/* 	echo " ". gettype($attr); */
+			foreach($attributes as $key => $attr) {
 				$attrString .= self::attributeFormat($tag, $key, $attr);
 			}
 		}
@@ -61,7 +61,7 @@ trait Attribute
 	 * @param int    	$start 			Offset started from
 	 * @return void
 	 */
-	private static function attributeValueAssign($ctx, $attributes, $key, $offset/* , $start */)
+	private static function attributeValueAssign($ctx, $attributes, $key, $offset)
 	{
 		if($attributes) {
 			$attr = $attributes;
@@ -70,10 +70,10 @@ trait Attribute
 				if(gettype($attr[$attribute]) == 'array') {
 					foreach($attr[$attribute] as $tag => $body) {
 						foreach($body as $i => $text)
-							self::distributeToTokenized($ctx, $attr[$attribute][$tag][$i], $key, $offset/* , $start */);
+							self::distributeToTokenized($ctx, $attr[$attribute][$tag][$i], $key, $offset);
 					}
 				} else
-					self::distributeToTokenized($ctx, $attr[$attribute], $key, $offset/* , $start */);
+					self::distributeToTokenized($ctx, $attr[$attribute], $key, $offset);
 			}
 
 			return $attr;
@@ -119,7 +119,7 @@ trait Attribute
 	 * @param int    	$start 			Offset started from
 	 * @return void
 	 */
-	private static function changeMatchingToken($ctx, &$tokenize, $matches, $key, $offset/* , $start */)
+	private static function changeMatchingToken($ctx, &$tokenize, $matches, $key, $offset)
 	{
 		if($matches && current($matches)) {
 			if($offset) {
@@ -184,10 +184,10 @@ trait Attribute
 	 * @param int    	$start 			Offset started from
 	 * @return void
 	 */
-	private static function distributeToTokenized($ctx, &$tokenize, $key, $offset/* , $start */)
+	private static function distributeToTokenized($ctx, &$tokenize, $key, $offset)
 	{
 		preg_match_all('/[\@]\w+/', $tokenize, $matches);
-		self::changeMatchingToken($ctx, $tokenize, $matches, $key, $offset/* , $start */);
+		self::changeMatchingToken($ctx, $tokenize, $matches, $key, $offset);
 	}
 
 	/**

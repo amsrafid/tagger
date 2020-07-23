@@ -100,15 +100,15 @@ class ControlStatement implements ControlStatementBinding
 			foreach($object as $key => $obj) {
 				if($then) {
 					$attrThen = $attributes;
-					if(self::checkConditionals($obj, $condition, $key,  $offset/* , $start */)){
+					if(self::checkConditionals($obj, $condition, $key,  $offset)){
 						$attrThen = array_merge($attributes, $then);
 					}
 					$count++;
-					Tag::{$tag}(self::attributeValueAssign($obj, $attrThen, $count, $offset/* , $start */));
+					Tag::{$tag}(self::attributeValueAssign($obj, $attrThen, $count, $offset));
 				} else {
-					if(self::checkConditionals($obj, $condition, $key,  $offset/* , $start */)){
+					if(self::checkConditionals($obj, $condition, $key,  $offset)){
 						$count++;
-						Tag::{$tag}(self::attributeValueAssign($obj, $attributes, $count, $offset/* , $start */));
+						Tag::{$tag}(self::attributeValueAssign($obj, $attributes, $count, $offset));
 					}
 				}
 			}
@@ -127,11 +127,11 @@ class ControlStatement implements ControlStatementBinding
 	 * @param int    		$start 		Offset started from
 	 * @return void
 	 */
-	private static function checkConditionals($ctx, $condition, $key, $offset/* , $start */)
+	private static function checkConditionals($ctx, $condition, $key, $offset)
 	{
 		if (gettype($condition) == 'string') {
 			preg_match_all('/[\@]\w+/', $condition, $matches);
-			self::changeMatchingToken($ctx, $condition, $matches, $key, $offset/* , $start */);
+			self::changeMatchingToken($ctx, $condition, $matches, $key, $offset);
 
 			return Condition::match($condition);
 		}
