@@ -44,7 +44,7 @@ class Tag
 	 * @param string $attributes  Attributes list
 	 * @return Html\Tag
 	 */
-	public static function build ($tag, $attributes)
+	private static function build ($tag, $attributes)
 	{
 		self::$appends = [];
 		self::$attributes = self::discoverBody($attributes);

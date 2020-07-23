@@ -122,6 +122,7 @@ Tag::ul(['if' => $arrs, 'b' => function() use($arrs) {
 	Able to capture in any attributes value
 
 	Special Attributes:
+		Attributes given bellow are useful only iff 'foreach' attribute is present.
 
 	'if' => string
 		Normal if condition. Ex: (@i > 2 && (@age == 50 || '@name' == 'HTML')).
