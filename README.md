@@ -1,6 +1,6 @@
 # HTML Tag
 
-	One of the most flexible view builder for php.
+One of the most flexible view builder for php.
 
 # Basic use
 
@@ -30,7 +30,7 @@ Most notable fact is that sudo or short name is also work as normal HTML attribu
 a 		=	alt,
 c 		=	class,
 cls		=	class,
-cont	=	content,
+cont		=	content,
 cs 		=	colspan,
 d 		=	data,
 da 		=	disabled,
@@ -43,8 +43,8 @@ ln 		=	lang,
 m 		=	method,
 mx 		=	max,
 mn 		=	min,
-mxlen	=	maxlength,
-mnlen	=	minlength,
+mxlen		=	maxlength,
+mnlen		=	minlength,
 mt 		=	muted,
 n  		=	name,
 p  		=	placeholder,
