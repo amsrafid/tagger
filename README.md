@@ -60,6 +60,9 @@ v 		=	value,
 val		=	value
 ~~~
 
+# Preset functionality
+Amsrafid Html allows preset as attributes or wrapper. That reduces using of same attribute and wrapper on same tag.
+
 ## Preset attributes for identical tag
 
 Preset common attributes value, using set Tag.
@@ -73,11 +76,34 @@ Tag::set([
 	...
 ]);
 
-Tag::input(['type' => 'text'])
+Tag::input(['type' => 'text']);
 
 <!--
 	Output:
 	<input type = "text" class = "form-control" />
+-->
+
+Tag::stopSet();
+~~~
+
+## Preset wrapper for identical tag
+
+Preset common wrapper value, using wrap Tag.
+
+~~~
+Tag::wrap([
+	'input' => ['div', ['c' => 'col-md-6', ...]],
+	'textarea' => 'div',
+	...
+]);
+
+Tag::input(['t' => 'text']);
+Tag::textarea();
+
+<!--
+	Output:
+	<div class = "col-md-6"><input type = "text" class = "form-control" /></div>
+	<div><textarea></textarea></div>
 -->
 
 Tag::stopSet();

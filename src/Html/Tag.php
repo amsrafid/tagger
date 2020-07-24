@@ -38,6 +38,13 @@ class Tag
 	public static $preset = [];
 
 	/**
+	 * Wrapper tag set
+	 * 
+	 * @var array
+	 */
+	public static $wrap = [];
+
+	/**
 	 * Buld new Attribute
 	 * 
 	 * @param string $tag         Tag name
@@ -116,6 +123,29 @@ class Tag
 	 */
 	private static function distribute ($tag, $attributes)
 	{
+		$wrapAttributes = [];
+
+		if(isset(self::$wrap[$tag])) {
+			if(\is_array(self::$wrap[$tag])) {
+				if(isset(self::$wrap[$tag][0]) && \is_string(self::$wrap[$tag][0]))
+					$wrapTag = self::$wrap[$tag][0];
+				else
+					throw new \Exception("Wrapper tag must be a string.");
+
+				$wrapAttributes = isset(self::$wrap[$tag][1]) ? self::$wrap[$tag][1] : [];
+			} else if(\is_string(self::$wrap[$tag])) {
+				$wrapTag = self::$wrap[$tag];
+			} else {
+				throw new \Exception("Wrapper tag must be a string or array where format is ['wrapper tag name', attributes set as array if required]");
+			}
+
+			$wrapAttributes['b'] = function() use($tag, $attributes) {
+				Tag::build($tag, $attributes);
+			};
+
+			return Tag::build($wrapTag, $wrapAttributes);
+		}
+
 		if($set = ControlStatement::match(array_keys($attributes)))
 			return ControlStatement::handle($tag, $attributes, $set);
 
@@ -187,5 +217,33 @@ class Tag
 	public static function stopSet()
 	{
 		self::$preset = [];
+	}
+
+	/**
+	 * Make empty to wrapper value
+	 * 
+	 * @return void
+	 */
+	public static function stopWrap()
+	{
+		self::$wrap = [];
+	}
+
+	/**
+	 * Set wrapper tag with attributes by tag name
+	 * 
+	 * @param array $value 	Set attributes by tag name as key. Format
+	 * 		['tag' => (array) ['wrapper tag', ['c' => 'class name'...]] || (string) tag name]
+	 * 		...
+	 * @return void
+	 */
+	public static function wrap($value = [])
+	{
+		if(self::$wrap) {
+			foreach($value as $key => $val) {
+				self::$wrap[$key] = $val;
+			}
+		} else
+			self::$wrap = $value;
 	}
 }
