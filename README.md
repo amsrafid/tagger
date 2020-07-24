@@ -1,4 +1,4 @@
-# HTML Tag
+	# HTML Tag
 
 One of the most flexible view builder for php.
 
@@ -104,7 +104,7 @@ Tag::stopWrap();
 
 **Output:**
 ~~~html
-<div class = "col-md-6"><input type = "text" class = "form-control" /></div>
+<div class = "col-md-6"><input type = "text" /></div>
 <div><textarea></textarea></div>
 ~~~
 
@@ -146,9 +146,8 @@ $arrs = [
 	
 Tag::table(['border' => '1', 'b' => function() use($arrs) {
 	Tag::tr(['b' => ['th' => ['#', 'ID', 'Name']]]);
-	Tag::tr(['foreach' => $arrs, 'offset' => 'i', 'start' => 1, 'b' => [
-			'td' => ['@i', '@id', '@name']
-		]
+	Tag::tr(['foreach' => $arrs, 'offset' => 'i', 'start' => 1,
+		'b' => ['td' => ['@i', '@id', '@name']]
 	]);
 }]);
 ~~~
@@ -196,7 +195,7 @@ Attributes given bellow are useful only iff **_foreach_** attribute is present.
 - **'if' => string**
 	- Normal if condition. Ex: **_(@i > 2 && (@age == 50 || '@name' == 'HTML'))_**.
 	- Here, **_@i_** is offset, **_@name_** is array key.
-	- Note: **_@name_** value is **string** type. So _'@name'_ is binded with quotes.
+	- Note: **_@name_** value is **string** type. So **_'@name'_** is binded with quotes.
 	On the other hand, **_@age_** value is **integer** type. So, quote is not required.
 
 - **'then' => string|array**
@@ -206,10 +205,10 @@ Attributes given bellow are useful only iff **_foreach_** attribute is present.
 
 - **'offset' => string**
 	- Contains loop array offset variable name.
-	- In **logical expression**, consided to be _started form 0_ and **in view** depends on **_start_** attribute.
+	- In **logical expression**, consided to be **_started form 0_** and **in view** depends on **_start_** attribute.
 
 - **'start' => int**
-	- From where body/view offset will be started from. Default start value is **1**.
+	- Denotes from where body/view offset will be started from. Default start value is **1**.
 
 ### if:
 
