@@ -140,6 +140,7 @@ class Tag
 			}
 
 			$wrapAttributes['b'] = function() use($tag, $attributes) {
+				self::handleLabel($attributes);
 				Tag::build($tag, $attributes);
 			};
 
@@ -149,6 +150,7 @@ class Tag
 		if($set = ControlStatement::match(array_keys($attributes)))
 			return ControlStatement::handle($tag, $attributes, $set);
 
+		self::handleLabel($attributes);
 		return Tag::build($tag, $attributes);
 	}
 
@@ -168,6 +170,51 @@ class Tag
 		} else {
 			?><!DOCTYPE <?= $value ?>><?php
 		}
+	}
+
+	/**
+	 * Check id is present to attribute set and return value
+	 * 
+	 * @param array	$attributes		Attribute set
+	 * @return string | null
+	 */
+	private static function hasId($attributes)
+	{
+		if (isset($attributes['i']))
+			return $attributes['i'];
+		if (isset($attributes['id']))
+			return $attributes['id'];
+
+		return null;
+	}
+
+	/**
+	 * Create label tag before identical tag
+	 * 
+	 * @param array	&$attributes		Main tag attribute, where label attribute should be present
+	 * @return \Html\Tag or true
+	 */
+	private static function handleLabel(&$attributes)
+	{
+		if(isset($attributes['label'])) {
+			$attr = [];
+			$label = $attributes['label'];
+			unset($attributes['label']);	
+
+			if(\is_array($label)) {
+				$attr = $label;
+			} else {
+				$attr['b'] = $label;
+			}
+
+			if($id = self::hasId($attributes)) {
+				$attr['f'] = $id;
+			}
+
+			return Tag::label($attr);
+		}
+
+		return true;
 	}
 
 	/**
