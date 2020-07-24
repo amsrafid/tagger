@@ -74,6 +74,7 @@ Tag::set([
 ]);
 
 Tag::input(['type' => 'text']);
+Tag::input(['type' => 'number']);
 
 Tag::stopSet();
 ~~~
@@ -81,6 +82,7 @@ Tag::stopSet();
 **Output:**
 ~~~html
 <input type = "text" class = "form-control" />
+<input type = "number" class = "form-control" />
 ~~~
 
 ## Preset wrapper for identical tag
@@ -138,17 +140,26 @@ Html table is able to be generated dynamically. Where, **_body_** can be passed 
 
 ~~~php
 $arrs = [
-	['age' => 24, 'name' => 'Amsrafid'],
-	['age' => 33, 'name' => 'Sadman Rafid']
+	['id' => 24, 'name' => 'Amsrafid'],
+	['id' => 33, 'name' => 'Sadman Rafid']
 ];
 	
 Tag::table(['border' => '1', 'b' => function() use($arrs) {
-	Tag::tr(['b' => ['th' => ['#', 'Age', 'Name']]]);
+	Tag::tr(['b' => ['th' => ['#', 'ID', 'Name']]]);
 	Tag::tr(['foreach' => $arrs, 'offset' => 'i', 'start' => 1, 'b' => [
-			'td' => ['@i', '@age', '@name']
+			'td' => ['@i', '@id', '@name']
 		]
 	]);
 }]);
+~~~
+
+**Output**
+~~~html
+<table border="1">
+	<tr><th>#</th><th>ID</th><th>Name</th></tr>
+	<tr><td>1</td><td>24</td><td>Amsrafid</td></tr>
+	<tr><td>2</td><td>33</td><td>Sadman Rafid</td></tr>
+</table>
 ~~~
 
 ## Control statement
@@ -166,6 +177,14 @@ Tag::ul(['if' => $arrs, 'b' => function() use($arrs) {
 		'v' => '@id', 'b' => '@i. @name'
 	]);
 }]);
+~~~
+
+**Output**
+~~~html
+<ul>
+	<li value="24">1. Amsrafid</li>
+	<li value="35">2. Sadman Rafid</li>
+</ul>
 ~~~
 
 @id -> @{array key name}.
@@ -217,10 +236,10 @@ Tag::span(['elseif' => $var > 5, 'b' => 'Var is greated than 5']);
 
 **Normal use:**
 ~~~php
-	if ($var > 10)
-		...
-	else if ($var > 5)
-		echo "<span>Var is greated than 5</span>
+if ($var > 10)
+	...
+else if ($var > 5)
+	echo "<span>Var is greated than 5</span>
 ~~~
 
 ### else:
@@ -233,10 +252,10 @@ Tag::span(['else' => true, 'b' => 'Var is less than 5']);
 
 **Normal use:**
 ~~~php
-	if ($var > 10)
-		...
-	else
-		echo "<span>Var is less than 5</span>
+if ($var > 10)
+	...
+else
+	echo "<span>Var is less than 5</span>
 ~~~
 
 ## Security Vulnerabilities
