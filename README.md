@@ -193,10 +193,9 @@ Able to capture in any attributes value
 Attributes given bellow are useful only iff **_foreach_** attribute is present.
 
 - **'if' => string**
-	- Normal if condition. Ex: **_(@i > 2 && (@age == 50 || '@name' == 'HTML'))_**.
+	- Normal if condition. Ex: **_(@i > 2 && (@age == 50 || @name == 'HTML'))_**.
 	- Here, **_@i_** is offset, **_@name_** is array key.
-	- Note: **_@name_** value is **string** type. So **_'@name'_** is binded with quotes.
-	On the other hand, **_@age_** value is **integer** type. So, quote is not required.
+	- Note: **_@name_** value is string type. So, comparing value must be block quoted.
 
 - **'then' => string|array**
 	- This attribute works when **_'if'_** condition is valid.

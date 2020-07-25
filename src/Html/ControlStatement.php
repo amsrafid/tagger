@@ -131,7 +131,7 @@ class ControlStatement implements ControlStatementBinding
 	{
 		if (gettype($condition) == 'string') {
 			preg_match_all('/[\@]\w+/', $condition, $matches);
-			self::changeMatchingToken($ctx, $condition, $matches, $key, $offset);
+			self::changeMatchingToken($ctx, $condition, $matches, $key, $offset, true);
 
 			return Condition::match($condition);
 		}

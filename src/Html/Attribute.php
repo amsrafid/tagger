@@ -119,18 +119,18 @@ trait Attribute
 	 * @param int    	$start 			Offset started from
 	 * @return void
 	 */
-	private static function changeMatchingToken($ctx, &$tokenize, $matches, $key, $offset)
+	private static function changeMatchingToken($ctx, &$tokenize, $matches, $key, $offset, $mode = false)
 	{
 		if($matches && current($matches)) {
 			if($offset) {
-				$ctx[$offset] = abs($key/*  + $start */);
+				$ctx[$offset] = abs($key);
 			}
 
 			foreach ($matches[0] as $value) {
 				$value = self::hasToken($value);
 
 				if(isset($ctx[$value])) {
-					$tokenize = self::changeTokenToValue($value, $ctx[$value], $tokenize);
+					$tokenize = self::changeTokenToValue($value, $ctx[$value], $tokenize, $mode);
 				}
 			}
 		}
@@ -144,8 +144,12 @@ trait Attribute
 	 * @param string $value    Token replaced from
 	 * @return string
 	 */
-	private static function changeTokenToValue($token, $replace, $value)
+	private static function changeTokenToValue($token, $replace, $value, $mode = false)
 	{
+		if($mode) {
+			$replace = "'$replace'";
+		}
+
 		return preg_replace('/(\@'.$token.')/', $replace, $value);
 	}
 
