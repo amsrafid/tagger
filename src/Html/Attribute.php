@@ -116,21 +116,31 @@ trait Attribute
 	 * @param array  	$matches 		Total matching tokens
 	 * @param string 	$key 				Object real offset
 	 * @param string 	$offset  		Offset variable name
-	 * @param int    	$start 			Offset started from
+	 * @param boolean $mode 			Check for condition or replace.
 	 * @return void
 	 */
 	private static function changeMatchingToken($ctx, &$tokenize, $matches, $key, $offset, $mode = false)
 	{
 		if($matches && current($matches)) {
 			if($offset) {
-				$ctx[$offset] = abs($key);
+				if(\is_object($ctx)) {
+					$ctx->{$offset} = abs($key);
+				} else {
+					$ctx[$offset] = abs($key);
+				}
 			}
 
 			foreach ($matches[0] as $value) {
 				$value = self::hasToken($value);
 
-				if(isset($ctx[$value])) {
-					$tokenize = self::changeTokenToValue($value, $ctx[$value], $tokenize, $mode);
+				if((\is_array($ctx) && isset($ctx[$value])) || (\is_object($ctx) && isset($ctx->{$value}))) {
+					if(\is_object($ctx)) {
+						$needle = $ctx->{$value};
+					} else {
+						$needle = $ctx[$value];
+					}
+
+					$tokenize = self::changeTokenToValue($value, $needle, $tokenize, $mode);
 				}
 			}
 		}
@@ -139,9 +149,10 @@ trait Attribute
 	/**
 	 * Replace token with actual value
 	 * 
-	 * @param string $token 	 	Token name without @
-	 * @param string $replace 	Token replaced with
-	 * @param string $value    Token replaced from
+	 * @param string 	$token 	 	Token name without @
+	 * @param string 	$replace 	Token replaced with
+	 * @param string 	$value    Token replaced from
+	 * @param boolean $mode 		Check for condition or replace. True means condition
 	 * @return string
 	 */
 	private static function changeTokenToValue($token, $replace, $value, $mode = false)

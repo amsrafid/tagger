@@ -182,7 +182,7 @@ class Condition
 			}
 
 			if($position > 2 || ( ($i == strlen($condition) - 1) &&
-				$perCondition[0] && $perCondition[1] && $perCondition[2])
+				$perCondition[0] != "" && $perCondition[1] != "" && $perCondition[2] != "")
 			) {
 				$simplified [] = self::overloadOperator(
 					$perCondition[0],
