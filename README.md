@@ -62,7 +62,7 @@ Amsrafid Html allows preset as **_attributes_** or **_wrapper_**. That reduces u
 
 ## Preset attributes for identical tag
 
-Preset common attributes value, using **_set_** Tag.
+Preset common attributes value, using **_set_** Tag. Here, preseting can be stoped by using **_stopSet_** method that accepts string or array of tag name or empty for destroy all.
 
 ~~~php
 Tag::set([
@@ -87,7 +87,7 @@ Tag::stopSet();
 
 ## Preset wrapper for identical tag
 
-Preset common wrapper value, using **_wrap_** Tag.
+Preset common wrapper value, using **_wrap_** Tag. Here, tag wrapping can be stoped by using **_stopWrap_** method that accepts string or array of tag name or empty for destroy all.
 
 ~~~php
 Tag::wrap([
