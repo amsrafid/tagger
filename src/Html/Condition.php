@@ -50,28 +50,6 @@ class Condition
 	}
 
 	/**
-	 * Simplify and replace AND|OR condition to single Boolean value
-	 * 
-	 * @param string $string	De Morgan's stripe
-	 * @return boolean
-	 */
-	private static function replaceConditionals($string)
-	{
-		$planeSet = [];
-		for($i = 0; $i < \strlen($string); $i++) {
-			if($string[$i] == '&') {
-				\array_pop($planeSet);
-				$planeSet [] = (($string[$i-1] + $string[$i+1]) == 2) ? 1 : 0;
-				$i++;
-			} else if($string[$i] != '|') {
-				$planeSet [] = $string[$i];
-			}
-		}
-
-		return \in_array(1, $planeSet) ? 1 : 0;
-	}
-
-	/**
 	 * Match condition from string
 	 * 
 	 * @param string $condition
@@ -150,6 +128,28 @@ class Condition
 				throw new \Exception("'{$operator}' is not a valid conditional operator");
 				break;
 	  }
+	}
+
+	/**
+	 * Simplify and replace AND|OR condition to single Boolean value
+	 * 
+	 * @param string $string	De Morgan's stripe
+	 * @return boolean
+	 */
+	private static function replaceConditionals($string)
+	{
+		$planeSet = [];
+		for($i = 0; $i < \strlen($string); $i++) {
+			if($string[$i] == '&') {
+				\array_pop($planeSet);
+				$planeSet [] = (($string[$i-1] + $string[$i+1]) == 2) ? 1 : 0;
+				$i++;
+			} else if($string[$i] != '|') {
+				$planeSet [] = $string[$i];
+			}
+		}
+
+		return \in_array(1, $planeSet) ? 1 : 0;
 	}
 
 	/**

@@ -57,6 +57,7 @@ val		=	value
 ~~~
 
 # Preset functionality
+
 Amsrafid Html allows preset as **_attributes_** or **_wrapper_**. That reduces using of same attribute and wrapper on same tag.
 
 ## Preset attributes for identical tag

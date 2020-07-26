@@ -24,44 +24,6 @@ class ControlStatement implements ControlStatementBinding
 	private static $monitorIf = true;
 
 	/**
-	 * Check the attribute is a control statement or not
-	 * 
-	 * @param string $statement  attribute name
-	 * @return bool
-	 */
-	public static function match($statement)
-	{
-		$statement = (object) (\is_array($statement) ? $statement : [$statement]);
-
-		$set = [];
-		if($statement) {
-			foreach ($statement as $key => $state) {
-				if(\in_array($state, self::$states))
-					$set [] = $state;
-			}
-		}
-
-		return $set;
-	}
-
-	/**
-	 * Handle Control statment
-	 * 
-	 * @param string 	$tag 		Tag name
-	 * @param array 	$attributes Tag Attributes
-	 * @param array 	$set 		Next conditional statement
-	 * @return tag view
-	 */
-	public static function handle($tag, $attributes, $set)
-	{
-		$attributes = self::discoverBody($attributes);
-		$first = 'c_'.current($set);
-		self::destroyKey($set, 0);
-
-		return self::{$first}($tag, $attributes, $set);
-	}
-
-	/**
 	 * Conditional foreach statement
 	 * 
 	 * @param string 	$tag 		Tag name
@@ -118,28 +80,6 @@ class ControlStatement implements ControlStatementBinding
 		}
 
 		return '';
-	}
-
-	/**
-	 * Change matching token to value
-	 * 
-	 * @param object 		$ctx 		Set context
-	 * @param string|object $condition  Loop nested condition string OR object
-	 * @param string 		$key 		Object real offset
-	 * @param string 		$offset  	Offset variable name
-	 * @param int    		$start 		Offset started from
-	 * @return void
-	 */
-	private static function checkConditionals($ctx, $condition, $key, $offset)
-	{
-		if (gettype($condition) == 'string') {
-			preg_match_all('/[\@]\w+/', $condition, $matches);
-			self::changeMatchingToken($ctx, $condition, $matches, $key, $offset, true);
-
-			return Condition::match($condition);
-		}
-
-		return $condition;
 	}
 
 	/**
@@ -204,5 +144,65 @@ class ControlStatement implements ControlStatementBinding
 		
 		self::$monitorIf = true;
 		return '';
+	}
+	
+	/**
+	 * Change matching token to value
+	 * 
+	 * @param object 		$ctx 		Set context
+	 * @param string|object $condition  Loop nested condition string OR object
+	 * @param string 		$key 		Object real offset
+	 * @param string 		$offset  	Offset variable name
+	 * @param int    		$start 		Offset started from
+	 * @return void
+	 */
+	private static function checkConditionals($ctx, $condition, $key, $offset)
+	{
+		if (gettype($condition) == 'string') {
+			preg_match_all('/[\@]\w+/', $condition, $matches);
+			self::changeMatchingToken($ctx, $condition, $matches, $key, $offset, true);
+
+			return Condition::match($condition);
+		}
+
+		return $condition;
+	}
+
+	/**
+	 * Check the attribute is a control statement or not
+	 * 
+	 * @param string $statement  attribute name
+	 * @return bool
+	 */
+	public static function match($statement)
+	{
+		$statement = (object) (\is_array($statement) ? $statement : [$statement]);
+
+		$set = [];
+		if($statement) {
+			foreach ($statement as $key => $state) {
+				if(\in_array($state, self::$states))
+					$set [] = $state;
+			}
+		}
+
+		return $set;
+	}
+
+	/**
+	 * Handle Control statment
+	 * 
+	 * @param string 	$tag 		Tag name
+	 * @param array 	$attributes Tag Attributes
+	 * @param array 	$set 		Next conditional statement
+	 * @return tag view
+	 */
+	public static function handle($tag, $attributes, $set)
+	{
+		$attributes = self::discoverBody($attributes);
+		$first = 'c_'.current($set);
+		self::destroyKey($set, 0);
+
+		return self::{$first}($tag, $attributes, $set);
 	}
 }
