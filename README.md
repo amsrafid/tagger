@@ -1,6 +1,6 @@
 # HTML Tag
 
-One of the most flexible view builder for php.
+One of the most flexible html view builder for php.
 
 # Basic use
 
@@ -220,7 +220,7 @@ Tag::span(['if' => $var > 10, 'b' => 'Var is greated than 10']);
 
 **Normal use:**
 ~~~php
-if($var > 0)
+if($var > 10)
 	echo "<span>Var is greated than 10</span>
 ~~~
 
