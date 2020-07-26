@@ -165,6 +165,18 @@ trait Attribute
 	}
 
 	/**
+	 * Destroy key from given array
+	 * 
+	 * @param array		&$attributes		Attribute set
+	 * @param string	$key					Array key
+	 * @return null
+	 */
+	private static function destroyKey(&$attributes, $key)
+	{
+		unset($attributes[$key]);
+	}
+
+	/**
 	 * Discover body text and replace sudo attribute name to real
 	 * 
 	 * @param array	$attributes real tag attributs
@@ -176,7 +188,7 @@ trait Attribute
 			foreach(self::$attrs['tag_body']['set'] as $set) {
 				if(isset($attributes[$set])) {
 					$body = $attributes[$set];
-					unset($attributes[$set]);
+					self::destroyKey($attributes, $set);
 
 					$attributes['body'] = $body;
 					return $attributes;
@@ -205,6 +217,14 @@ trait Attribute
 		self::changeMatchingToken($ctx, $tokenize, $matches, $key, $offset);
 	}
 
+	/**
+	 * Format then attributes value.
+	 * Change a string to attribute and merge with real attribute set
+	 * 
+	 * @param array					$attributes		Attribute set
+	 * @param array|string	$then					Then attribute value
+	 * @return array
+	 */
 	private static function formatThenAttribute($attributes, $then)
 	{
 		if(\is_array($then)) {

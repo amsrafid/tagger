@@ -56,7 +56,7 @@ class ControlStatement implements ControlStatementBinding
 	{
 		$attributes = self::discoverBody($attributes);
 		$first = 'c_'.current($set);
-			unset($set[0]);
+		self::destroyKey($set, 0);
 
 		return self::{$first}($tag, $attributes, $set);
 	}
@@ -72,7 +72,7 @@ class ControlStatement implements ControlStatementBinding
 	public static function c_foreach($tag, $attributes, $set)
 	{
 		$object = $attributes['foreach'];
-		unset($attributes['foreach']);
+		self::destroyKey($attributes, 'foreach');
 
 		$count = $offset = $start = 0;
 		$condition = true;
@@ -80,20 +80,22 @@ class ControlStatement implements ControlStatementBinding
 
 		if(isset($attributes['offset'])) {
 			$offset = $attributes['offset'];
-			unset($attributes['offset']);
+			self::destroyKey($attributes, 'offset');
+
 			if(isset($attributes['start'])) {
 				$start = $attributes['start'];
-				unset($attributes['start']);
+				self::destroyKey($attributes, 'start');
+				
 				$count = $start - 1;
 			}
 		}
 		if (isset($attributes['if'])) {
 			$condition = $attributes['if'];
-			unset($attributes['if']);
+			self::destroyKey($attributes, 'if');
 		}
 		if (isset($attributes['then'])) {
 			$then = $attributes['then'];
-			unset($attributes['then']);
+			self::destroyKey($attributes, 'then');
 		}
 		
 		if($object) {
@@ -150,9 +152,9 @@ class ControlStatement implements ControlStatementBinding
 	 */
 	public static function c_if ($tag, $attributes, $set)
 	{
-		$object = $attributes['if'];
-		unset($attributes['if']);
 		self::$monitorIf = true;
+		$object = $attributes['if'];
+		self::destroyKey($attributes, 'if');
 		
 		if($object) {
 			return Tag::{$tag}($attributes);
@@ -173,7 +175,7 @@ class ControlStatement implements ControlStatementBinding
 	 */
 	public static function c_elseif($tag, $attributes, $set) {
 		$object = $attributes['elseif'];
-		unset($attributes['elseif']);
+		self::destroyKey($attributes, 'elseif');
 		
 		if(! self::$monitorIf && $object) {
 			self::$monitorIf = true;
@@ -193,7 +195,7 @@ class ControlStatement implements ControlStatementBinding
 	 */
 	public static function c_else($tag, $attributes, $set) {
 		$object = $attributes['else'];
-		unset($attributes['else']);
+		self::destroyKey($attributes, 'else');
 		
 		if(! self::$monitorIf && $object != false) {
 			self::$monitorIf = true;

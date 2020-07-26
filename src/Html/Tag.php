@@ -57,7 +57,7 @@ class Tag
 		self::$attributes = self::discoverBody($attributes);
 
 		$body = self::$attributes['body'];
-		unset(self::$attributes['body']);
+		self::destroyKey(self::$attributes, 'body');
 
 		if(($body || $body == '0') && ! in_array($tag, self::$single)) {
 			?><<?= "{$tag}" ?><?= self::attributes($tag) ?>><?= (gettype($body) == 'object')
@@ -199,7 +199,7 @@ class Tag
 		if(isset($attributes['label'])) {
 			$attr = [];
 			$label = $attributes['label'];
-			unset($attributes['label']);	
+			self::destroyKey($attributes, 'label');
 
 			if(\is_array($label)) {
 				$attr = $label;
