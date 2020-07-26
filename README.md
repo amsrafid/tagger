@@ -262,4 +262,4 @@ If you discover a security vulnerability within this, please send an e-mail to *
 
 ## License
 
-The Asrafid Html is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Amsrafid Html is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).

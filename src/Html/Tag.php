@@ -261,9 +261,19 @@ class Tag
 	 * 
 	 * @return void
 	 */
-	public static function stopSet()
+	public static function stopSet($value = [])
 	{
-		self::$preset = [];
+		if(! empty($value)) {
+			$value = is_array($value) ? $value : [$value];
+
+			foreach($value as $val) {
+				if(isset(self::$preset[$val])) {
+					self::destroyKey(self::$preset, $val);
+				}
+			}
+		} else {
+			self::$preset = [];
+		}
 	}
 
 	/**
@@ -271,9 +281,19 @@ class Tag
 	 * 
 	 * @return void
 	 */
-	public static function stopWrap()
+	public static function stopWrap($value = [])
 	{
-		self::$wrap = [];
+		if(! empty($value)) {
+			$value = is_array($value) ? $value : [$value];
+
+			foreach($value as $val) {
+				if(isset(self::$wrap[$val])) {
+					self::destroyKey(self::$wrap, $val);
+				}
+			}
+		} else {
+			self::$wrap = [];
+		}
 	}
 
 	/**
