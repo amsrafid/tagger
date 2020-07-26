@@ -199,7 +199,7 @@ Attributes given bellow are useful only iff **_foreach_** attribute is present.
 
 - **'then' => string|array**
 	- This attribute works when **_'if'_** condition is valid.
-	- String value will be considered as attribute value true. Ex: **_selected_**
+	- String value will be considered as attribute value true. Multiple string can be considered as identical attribute are seperated with _comma_ or _semicolon_ or _dot_ or _space_ `, OR ; OR . OR \s+`. Ex: **_selected disabled_**
 	- Here, array contains attribute set which will be changed after a valid if condition.
 
 - **'offset' => string**

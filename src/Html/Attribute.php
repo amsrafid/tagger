@@ -205,6 +205,40 @@ trait Attribute
 		self::changeMatchingToken($ctx, $tokenize, $matches, $key, $offset);
 	}
 
+	private static function formatThenAttribute($attributes, $then)
+	{
+		if(\is_array($then)) {
+			return array_merge($attributes, $then);
+		}
+		else if(\is_string($then)) {
+			$matched = true;
+			$sets = \preg_split('/[.,;\s+]/', trim(strtolower($then)));
+
+			if(! empty($sets)) {
+				$thenArray = [];
+
+				foreach($sets as $set) {
+					$set = preg_replace('/\s+/', '', $set);
+					if($set) {
+						if(preg_match('/\w+[\-]*(\w+)*/', $set)) {
+								$thenArray[$set] = true;
+						}
+						else {
+							$matched = false;
+							break;
+						}
+					}
+				}
+
+				if(! empty($thenArray) && $matched) {
+					return array_merge($attributes, $thenArray);
+				}
+			}
+		}
+		
+		throw new \Exception("Attribute 'then', expects attribute set or single attributes as string.");
+	}
+
 	/**
 	 * Check key has sudo or not
 	 * 

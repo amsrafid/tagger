@@ -101,8 +101,9 @@ class ControlStatement implements ControlStatementBinding
 				if($then) {
 					$attrThen = $attributes;
 					if(self::checkConditionals($obj, $condition, $key,  $offset)){
-						$attrThen = array_merge($attributes, $then);
+						$attrThen = self::formatThenAttribute($attributes, $then);
 					}
+
 					$count++;
 					Tag::{$tag}(self::attributeValueAssign($obj, $attrThen, $count, $offset));
 				} else {
