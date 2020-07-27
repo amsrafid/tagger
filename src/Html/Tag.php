@@ -59,16 +59,15 @@ class Tag
 		$body = self::$attributes['body'];
 		self::destroyKey(self::$attributes, 'body');
 
-		if(($body || $body == '0') && ! in_array($tag, self::$single)) {
-			?><<?= "{$tag}" ?><?= self::attributes($tag) ?>><?= (gettype($body) == 'object')
-				? (gettype($newBody = $body(new self)) == 'array'
-					? self::multiLevelTag($newBody)
-					: $newBody
-					)
-				: ((gettype($body) == 'array')
-					? self::multiLevelTag($body)
-					: (gettype($body) == 'boolean' && $body ? "" : $body)
-				) ?></<?= $tag ?>><?php
+		if(($body || $body == '0') && ! \in_array($tag, self::$single)) {
+			?><<?= "{$tag}" ?><?= self::attributes($tag) ?>><?= \is_object($body)
+				? (\is_array($newBody = $body(new self))
+						? self::multiLevelTag($newBody)
+						: $newBody)
+				: (\is_array($body)
+						? self::multiLevelTag($body)
+						: (\is_bool($body) && $body ? "" : $body)
+					) ?></<?= $tag ?>><?php
 		} else {
 			?><<?= "{$tag}" ?><?= self::attributes($tag) ?> /><?php
 		}
