@@ -21,6 +21,52 @@ Attribute name as array key and value as key value
 Note: Data attribues is handled with sudo **_[d-name/\_name/\*name]_**.
 In all case, attribute name will be **_data-name_**.
 
+### Attribute **_'body'_**:
+Attribute **_body_** is the nested part of the tag. Body can be five types. String or number is basic type. Special types are,
+- **_Array_ type:**
+	- Here, only **_associative_** array is allowed to show. In that case, **_arry key_** denotes **_tag name_** and **_value_** is a **_sequential array_** where each value is the body of each tag named in main array key.
+	- For example:
+	~~~php
+	Tag::select(['b' => ['option' => ['one', 'two', 'three']]]);
+	~~~
+	- Output:
+	~~~html
+	<select>
+		<option>one</option>
+		<option>two</option>
+		<option>three</option>
+	</select>
+	~~~
+- **_object_ type:**
+	- returns string or number to be shown in body.
+	- Mainly, object type denotes a **_function_** that contains nested tag on the of the mother tag.
+	- For example:
+	~~~php
+	Tag::div(function(){
+		Tag::h4("First set:");
+		Tag::hr();
+		Tag::div(['b' => 'Having fun, isn\'t it?']);
+		Tag::div(function(){
+			Tag::span("One");
+			Tag::span("Two");
+			Tag::span(3);
+		});
+	});
+	~~~
+	- Output:
+	~~~html
+	<div>
+		<h4>First set:</h4>
+		<hr>
+		<div>Having fun, isn't it?</div>
+		<div>
+			<span>One</span>
+			<span>Two</span>
+			<span>3</span>
+		</div>
+	</div>
+	~~~
+
 ## Sudo attributes is available
 
 ~~~
