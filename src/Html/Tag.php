@@ -61,7 +61,10 @@ class Tag
 
 		if(($body || $body == '0') && ! in_array($tag, self::$single)) {
 			?><<?= "{$tag}" ?><?= self::attributes($tag) ?>><?= (gettype($body) == 'object')
-				? $body(new self)
+				? (gettype($newBody = $body(new self)) == 'array'
+					? self::multiLevelTag($newBody)
+					: $newBody
+					)
 				: ((gettype($body) == 'array')
 					? self::multiLevelTag($body)
 					: (gettype($body) == 'boolean' && $body ? "" : $body)

@@ -18,11 +18,11 @@ Most notable fact is that **_sudo_** or short name is also work as normal HTML a
 ~~~
 
 Attribute name as array key and value as key value
-Note: Data attribues is handled with sudo **_[d-name/\_name/\*name]_**.
-In all case, attribute name will be **_data-name_**.
+Note: Data attribue is also handled with sudo **_[d-name/\_name/\*name]_**.
+In all cases, attribute name will be **_data-name_**.
 
 ### Attribute **_'body'_**:
-Attribute **_body_** is the nested part of the tag. Body can be five types. String or number is basic type. Special types are,
+Attribute **_body_** is the nested part of a tag. Body can be of five types. String or number is basic type. Special types are,
 - **_Array_ type:**
 	- Here, only **_associative_** array is allowed to show. In that case, **_arry key_** denotes **_tag name_** and **_value_** is a **_sequential array_** where each value is the body of each tag named in main array key.
 	- For example:
@@ -65,6 +65,16 @@ Attribute **_body_** is the nested part of the tag. Body can be five types. Stri
 			<span>3</span>
 		</div>
 	</div>
+	~~~
+- **_Boolean_ type**
+	- Boolean type works when there is nothing to show on body. But, The tag is not a single tag like, `<img />`. Then, body value should be given as true.
+	- For example:
+	~~~php
+		Tag::script(["s"=>"https://script.js", 'b' => true]);
+	~~~
+	- Output:
+	~~~html
+	<script src="https://script.js"></script>
 	~~~
 
 ## Sudo attributes is available
