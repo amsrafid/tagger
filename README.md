@@ -77,7 +77,7 @@ Attribute **_body_** is the nested part of a tag. Body can be of five types. Str
 	- Boolean type works when there is nothing to show on body. But, The tag is not a single tag like, `<img />`. Then, body value should be given as **__true__**.
 	- Example:
 	~~~php
-		Tag::script(["s"=>"https://script.js", 'b' => true]);
+	Tag::script(["s"=>"https://script.js", 'b' => true]);
 	~~~
 	- Output:
 	~~~html
@@ -205,8 +205,9 @@ Here, html table is able to be generated dynamically. Where, **_body_** can be p
 
 ~~~php
 $arrs = [
-	['id' => 24, 'name' => 'Amsrafid'],
-	['id' => 33, 'name' => 'Sadman Rafid']
+	['id' => 24, 'name' => 'HTML'],
+	['id' => 33, 'name' => 'CSS'],
+	['id' => 49, 'name' => 'JAVASCRIP']
 ];
 	
 Tag::table(['border' => '1', 'b' => function() use($arrs) {
@@ -221,8 +222,9 @@ Tag::table(['border' => '1', 'b' => function() use($arrs) {
 ~~~html
 <table border="1">
 	<tr><th>#</th><th>ID</th><th>Name</th></tr>
-	<tr><td>1</td><td>24</td><td>Amsrafid</td></tr>
-	<tr><td>2</td><td>33</td><td>Sadman Rafid</td></tr>
+	<tr><td>1</td><td>24</td><td>HTML</td></tr>
+	<tr><td>2</td><td>33</td><td>CSS</td></tr>
+	<tr><td>3</td><td>49</td><td>JAVASCRIP</td></tr>
 </table>
 ~~~
 
@@ -238,6 +240,7 @@ Act like normal foreach in php. Here, **_offset_**, **_start_** respectively use
 Tag::ul(['if' => $arrs, 'b' => function() use($arrs) {
 	Tag::li([
 		'foreach' => $arrs, 'offset' => 'i',
+		'if' => '@id > 24',
 		'v' => '@id', 'b' => '@i. @name'
 	]);
 }]);
@@ -246,8 +249,8 @@ Tag::ul(['if' => $arrs, 'b' => function() use($arrs) {
 **Output**
 ~~~html
 <ul>
-	<li value="24">1. Amsrafid</li>
-	<li value="35">2. Sadman Rafid</li>
+	<li value="33">1. CSS</li>
+	<li value="49">2. JAVASCRIP</li>
 </ul>
 ~~~
 
