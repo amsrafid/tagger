@@ -5,7 +5,7 @@ One of the most flexible html view builder for php.
 # Basic use
 
 Very easy to use. Attribute and tag name is same as normal html.
-Most notable fact is that **_sudo_** or short name is also work as normal HTML attributes.
+Most notable fact is that **_sudo_** or short name is also worked as normal HTML attributes.
 
 ~~~php
 \Html\Tag::{Tag name}([
@@ -17,39 +17,43 @@ Most notable fact is that **_sudo_** or short name is also work as normal HTML a
 ]);
 ~~~
 
-Attribute name as array key and value as key value
-Note: Data attribue is also handled with sudo **_[d-name/\_name/\*name]_**.
-In all cases, attribute name will be **_data-name_**.
+Array key refers attribute name and key value as attribute value.\
+Note: Data attribue is also handled with sudo as like **_[d-name/\_name/\*name]_**.\
+In all cases above, attribute name will be **_data-name_**.
 
 ### Attribute **_'body'_**:
 Attribute **_body_** is the nested part of a tag. Body can be of five types. String or number is basic type. Special types are,
 - **_Array_ type:**
 	- Here, only **_associative_** array is allowed to show. In that case, **_arry key_** denotes **_tag name_** and **_value_** is a **_sequential array_** where each value is the body of each tag named in main array key.
-	- For example:
+	- Example:
 	~~~php
-	Tag::select(['b' => ['option' => ['one', 'two', 'three']]]);
+	Tag::ul(['b' => ['li' => ['one', 'two', 'three']]]);
 	~~~
 	- Output:
 	~~~html
-	<select>
-		<option>one</option>
-		<option>two</option>
-		<option>three</option>
-	</select>
+	<ul>
+		<li>one</li>
+		<li>two</li>
+		<li>three</li>
+	</ul>
 	~~~
-- **_object_ type:**
-	- returns string or number to be shown in body.
-	- Mainly, object type denotes a **_function_** that contains nested tag on the of the mother tag.
-	- For example:
+- **_Object_ type:**
+	- Returns _string_, _number_ or _associative array_ to be shown in body.
+	- Mainly, object type denotes a **_function_** that contains nested elements of mother tag.
+	- Example:
 	~~~php
 	Tag::div(function(){
 		Tag::h4("First set:");
 		Tag::hr();
 		Tag::div(['b' => 'Having fun, isn\'t it?']);
 		Tag::div(function(){
-			Tag::span("One");
-			Tag::span("Two");
-			Tag::span(3);
+			Tag::span(function(){ return "One"; });
+			Tag::span(2);
+
+			return [
+				'h3' => ['array', 'returned'],
+				'u' => ['test', 'underline'],
+			];
 		});
 	});
 	~~~
@@ -61,14 +65,17 @@ Attribute **_body_** is the nested part of a tag. Body can be of five types. Str
 		<div>Having fun, isn't it?</div>
 		<div>
 			<span>One</span>
-			<span>Two</span>
-			<span>3</span>
+			<span>2</span>
+			<h3>array</h3>
+			<h3>returned</h3>
+			<u>test</u>
+			<u>underline</u>
 		</div>
 	</div>
 	~~~
 - **_Boolean_ type**
-	- Boolean type works when there is nothing to show on body. But, The tag is not a single tag like, `<img />`. Then, body value should be given as true.
-	- For example:
+	- Boolean type works when there is nothing to show on body. But, The tag is not a single tag like, `<img />`. Then, body value should be given as **__true__**.
+	- Example:
 	~~~php
 		Tag::script(["s"=>"https://script.js", 'b' => true]);
 	~~~
@@ -77,8 +84,8 @@ Attribute **_body_** is the nested part of a tag. Body can be of five types. Str
 	<script src="https://script.js"></script>
 	~~~
 
-## Sudo attributes is available
-
+## Sudo attributes are available
+List of **_sudo_** attribute is given bellow.
 ~~~
 a 		=	alt,
 c 		=	class,
@@ -114,11 +121,11 @@ val		=	value
 
 # Preset functionality
 
-Amsrafid Html allows preset as **_attributes_** or **_wrapper_**. That reduces using of same attribute and wrapper on same tag.
+Amsrafid Html allows preset of **_attributes_** and **_wrapper_**. It reduces using of same attribute and wrapping on same tag.
 
 ## Preset attributes for identical tag
 
-Preset common attributes value, using **_set_** Tag. Here, preseting can be stoped by using **_stopSet_** method that accepts string or array of tag name or empty for destroy all.
+Preset functionality works on common attribute value using **_set_** method. Here, preseting can be stoped by using **_stopSet_** method that accepts **_string_** or **_array_** of tag name or empty for destroy all.
 
 ~~~php
 Tag::set([
@@ -143,7 +150,7 @@ Tag::stopSet();
 
 ## Preset wrapper for identical tag
 
-Preset common wrapper value, using **_wrap_** Tag. Here, tag wrapping can be stoped by using **_stopWrap_** method that accepts string or array of tag name or empty for destroy all.
+Similar with **_set_** wrapping functionality works on common wrapper value, using **_wrap_** method. Here also, tag wrapping can be stoped by using **_stopWrap_** method that accepts **_string_** or **_array_** of tag name or empty for destroy all.
 
 ~~~php
 Tag::wrap([
@@ -155,13 +162,15 @@ Tag::wrap([
 Tag::input(['t' => 'text']);
 Tag::textarea();
 
-Tag::stopWrap();
+Tag::stopWrap(['textarea']);	/* OR Tag::stopWrap('textarea'); */
+Tag::textarea("Text area value");
 ~~~
 
 **Output:**
 ~~~html
 <div class = "col-md-6"><input type = "text" /></div>
 <div><textarea></textarea></div>
+<textarea>Text area value</textarea>
 ~~~
 
 # Special use
@@ -192,7 +201,7 @@ Tag::input(['t' => 'number', 'i' => 'age', 'label' => 'Age *', 'p' => "Age"]);
 
 ## Table
 
-Html table is able to be generated dynamically. Where, **_body_** can be passed an array with key as **_tag name_** and key value a normal array for tag body.
+Here, html table is able to be generated dynamically. Where, **_body_** can be passed an array with **_key_** as **_tag name_** and **_key value_** as normal **_array_** for tag body.
 
 ~~~php
 $arrs = [
@@ -219,11 +228,11 @@ Tag::table(['border' => '1', 'b' => function() use($arrs) {
 
 ## Control statement
 
-As like normal control statement **_foreach/if/elseif/else_**. Control statements uses as attributes.
+Control statement acts as like normal **_foreach/if/elseif/else_** here. Control statement uses as attribute.
 
 ### foreach:
 
-Act like normal foreach in php. Here, **_offset_**, **_start_** used for loop array/object affset, and from which value offset count will be started.
+Act like normal foreach in php. Here, **_offset_**, **_start_** respectively used for loop array/object offset, and from which value offset count will be started.
 
 ~~~php
 Tag::ul(['if' => $arrs, 'b' => function() use($arrs) {
@@ -242,8 +251,8 @@ Tag::ul(['if' => $arrs, 'b' => function() use($arrs) {
 </ul>
 ~~~
 
-@id -> @{array key name}.
-Able to capture in any attributes value
+@id -> @{array key name}.\
+Able to capture in any attribute value.
 
 **Special Attributes:**
 Attributes given bellow are useful only iff **_foreach_** attribute is present.
@@ -255,12 +264,12 @@ Attributes given bellow are useful only iff **_foreach_** attribute is present.
 
 - **'then' => string|array**
 	- This attribute works when **_'if'_** condition is valid.
-	- String value will be considered as attribute value true. Multiple string can be considered as identical attribute are seperated with _comma_ or _semicolon_ or _dot_ or _space_ `, OR ; OR . OR \s+`. Ex: **_selected disabled_**
-	- Here, array contains attribute set which will be changed after a valid if condition.
+	- **_String_** type value consideres as attribute value _true_. Multiple _string_ can be considered as identical attribute that seperated with _comma_ or _semicolon_ or _dot_ or _space_ `, OR ; OR . OR \s+`. Ex: **_selected disabled_**
+	- Here, **_array_** contains attribute set which will be changed after a valid **_if_** condition.
 
 - **'offset' => string**
-	- Contains loop array offset variable name.
-	- In **logical expression**, consided to be **_started form 0_** and **in view** depends on **_start_** attribute.
+	- Contains loop array _offset variable name_.
+	- In **logical expression**, considers to be **_started form 0_** and **in view** depends on **_start_** attribute.
 
 - **'start' => int**
 	- Denotes from where body/view offset will be started from. Default start value is **1**.
@@ -271,13 +280,13 @@ Normal **_if_** statement like php.
 
 ~~~php
 $var = 10;
-Tag::span(['if' => $var > 10, 'b' => 'Var is greated than 10']);
+Tag::span(['if' => $var > 10, 'b' => 'Var is greater than 10']);
 ~~~
 
 **Normal use:**
 ~~~php
 if($var > 10)
-	echo "<span>Var is greated than 10</span>
+	echo "<span>Var is greater than 10</span>
 ~~~
 
 ### elseif:
@@ -285,7 +294,7 @@ if($var > 10)
 Normal **_elseif_** statement like php. Here, this condition will only work iff **_if_** statment is present before this.
 
 ~~~php
-Tag::span(['elseif' => $var > 5, 'b' => 'Var is greated than 5']);
+Tag::span(['elseif' => $var > 5, 'b' => 'Var is greater than 5']);
 ~~~
 
 **Normal use:**
@@ -293,12 +302,12 @@ Tag::span(['elseif' => $var > 5, 'b' => 'Var is greated than 5']);
 if ($var > 10)
 	...
 else if ($var > 5)
-	echo "<span>Var is greated than 5</span>
+	echo "<span>Var is greater than 5</span>
 ~~~
 
 ### else:
 
-Normal **_else_** statement like php. Value will be **anything except _false_**. Here, this condition will only work iff **_if_** or **_elseif_** statment is present before this.
+Normal **_else_** statement like php. Value should be given as **_true_**. Here, this condition will only work iff **_if_** or **_elseif_** statment is present before this.
 
 ~~~php
 Tag::span(['else' => true, 'b' => 'Var is less than 5']);
@@ -318,4 +327,4 @@ If you discover a security vulnerability within this, please send an e-mail to *
 
 ## License
 
-The Amsrafid Html is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The amsrafid Html is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
