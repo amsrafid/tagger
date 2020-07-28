@@ -1,4 +1,4 @@
-# HTML Tag
+# Tagger
 
 One of the most flexible html view builder for php.
 
@@ -121,7 +121,7 @@ val		=	value
 
 # Preset functionality
 
-Amsrafid Html allows preset of **_attributes_** and **_wrapper_**. It reduces using of same attribute and wrapping on same tag.
+Tagger allows preset of **_attributes_** and **_wrapper_**. It reduces using of same attribute and wrapping on same tag.
 
 ## Preset attributes for identical tag
 
@@ -330,4 +330,4 @@ If you discover a security vulnerability within this, please send an e-mail to *
 
 ## License
 
-The amsrafid Html is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The tagger is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
