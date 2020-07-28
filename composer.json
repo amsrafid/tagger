@@ -1,9 +1,8 @@
 {
-    "name": "amsrafid/html",
-    "description": "Great view builder for php with inbuilt control statment.",
-    "keywords": ["amsrafid", "html", "markup", "tag", "attribute", "view"],
+    "name": "amsrafid/tagger",
+    "description": "Perfect view builder for php with inbuilt control statement.",
+    "keywords": ["amsrafid", "tagger", "html", "markup", "tag", "attribute", "view"],
     "license": "MIT",
-    "type": "library",
     "authors": [
         {
             "name": "A M Sadman Rafid",

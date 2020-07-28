@@ -1,6 +1,6 @@
 # Tagger
 
-One of the most flexible html view builder for php.
+One of the most flexible html view builder for php. It builds view in php file using same naming convention of html tag and attributes.
 
 # Basic use
 
@@ -27,6 +27,8 @@ Attribute **_body_** is the nested part of a tag. Body can be of five types. Str
 	- Here, only **_associative_** array is allowed to show. In that case, **_arry key_** denotes **_tag name_** and **_value_** is a **_sequential array_** where each value is the body of each tag named in main array key.
 	- Example:
 	~~~php
+	use Html\Tag;
+
 	Tag::ul(['b' => ['li' => ['one', 'two', 'three']]]);
 	~~~
 	- Output:
