@@ -45,6 +45,7 @@ trait Credentials
 	 */
 	public static $sudo = [
 		'a' => 'alt',
+		'ac' => 'action',
 		'af' => 'autofocus',
 		'c' => 'class',
 		'cls' => 'class',

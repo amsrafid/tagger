@@ -90,6 +90,7 @@ Attribute **_body_** is the nested part of a tag. Body can be of five types. Str
 List of **_sudo_** attribute is given bellow.
 ~~~
 a 		=	alt,
+ac		=	action,
 c 		=	class,
 cls		=	class,
 cont		=	content,
