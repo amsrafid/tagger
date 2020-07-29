@@ -240,22 +240,34 @@ class Tag
 	 * 
 	 * @param array $value 	Set attributes by tag name as key. Format
 	 * 		[
-	 * 			'tag' => [
+	 * 			'taga' => [
  	 *				'c' => 'class-name',
  	 *				...
  	 *			],
+ 	 *			'tagb' => '@taga',
 	 * 			...
 	 * 		]
 	 * @return void
 	 */
 	public static function set($value = [])
 	{
-		if(self::$preset) {
+		if($value) {
 			foreach($value as $key => $val) {
-				self::$preset[$key] = $val;
+				if(\is_string($val) && self::isToken($val)) {
+					$token = self::replaceTokenIdentifier($val);
+
+					if(isset($value[$token])) {
+						self::$preset[$key] = $value[$token];
+					} else {
+						throw new \Exception("Invalid tag preset is trying to be set in '".$key."' tag.");
+					}
+				}
+				else if (\is_array($val))
+					self::$preset[$key] = $val;
+				else
+					throw new \Exception("Invalid attribute format for tag '".$key."'. Set of attributes or token (@tag) is expected.");
 			}
-		} else
-			self::$preset = $value;
+		}
 	}
 
 	/**
@@ -302,17 +314,31 @@ class Tag
 	 * Set wrapper tag with attributes by tag name
 	 * 
 	 * @param array $value 	Set attributes by tag name as key. Format
-	 * 		['tag' => (array) ['wrapper tag', ['c' => 'class name'...]] || (string) tag name]
+	 * 		['taga' => (array) ['wrapper tag', ['c' => 'class name'...]] || (string) tag name],
+	 * 		['tagb' => '@taga'],
 	 * 		...
 	 * @return void
 	 */
 	public static function wrap($value = [])
 	{
-		if(self::$wrap) {
+		if($value) {
 			foreach($value as $key => $val) {
-				self::$wrap[$key] = $val;
+				if(\is_string($val) && self::isToken($val)) {
+					$token = self::replaceTokenIdentifier($val);
+
+					if(isset($value[$token])) {
+						self::$wrap[$key] = $value[$token];
+					} else {
+						throw new \Exception("Invalid wrap preset is trying to be set in '".$key."' tag.");
+					}
+				}
+				else if (\is_array($val)) {
+					self::$wrap[$key] = $val;
+				}
+				else {
+					throw new \Exception("Invalid attribute format for tag '".$key."'. Set of attributes or token (@tag) is expected.");
+				}
 			}
-		} else
-			self::$wrap = $value;
+		}
 	}
 }

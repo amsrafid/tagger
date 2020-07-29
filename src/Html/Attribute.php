@@ -131,7 +131,7 @@ trait Attribute
 			}
 
 			foreach ($matches[0] as $value) {
-				$value = self::hasToken($value);
+				$value = self::replaceTokenIdentifier($value);
 
 				if((\is_array($ctx) && isset($ctx[$value])) || (\is_object($ctx) && isset($ctx->{$value}))) {
 					if(\is_object($ctx)) {
@@ -269,19 +269,20 @@ trait Attribute
 	{
 		return isset(self::$sudo[$key]) ? self::$sudo[$key] : $key;
 	}
-
+	
 	/**
-	 * Check value contains a key token
-	 * @token format exists or not
+	 * Check is token or not
 	 * 
-	 * @param string  $value 		String that should contains token
+	 * @param string	$token	Token 
 	 * @return bool
 	 */
-	private static function hasToken($value)
+	private static function isToken($token)
 	{
-		return preg_replace('/\@/', '', $value);
+		$token = \preg_replace('/\s+/', '', $token);
+
+		return preg_match('/^[\@]\w+/', $token);
 	}
-	
+
 	/**
 	 * Monitoring that the attribute is already used
 	 * 
@@ -299,5 +300,16 @@ trait Attribute
 		}
 
 		return false;
+	}
+
+	/**
+	 * Replace identifier from token
+	 * 
+	 * @param string  $value 		String that is a token
+	 * @return string
+	 */
+	private static function replaceTokenIdentifier($value)
+	{
+		return preg_replace('/\@/', '', $value);
 	}
 }
