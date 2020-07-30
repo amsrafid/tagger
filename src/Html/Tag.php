@@ -323,13 +323,17 @@ class Tag
 	{
 		if($value) {
 			foreach($value as $key => $val) {
-				if(\is_string($val) && self::isToken($val)) {
-					$token = self::replaceTokenIdentifier($val);
-
-					if(isset($value[$token])) {
-						self::$wrap[$key] = $value[$token];
+				if(\is_string($val)) {
+					if(self::isToken($val)) {
+						$token = self::replaceTokenIdentifier($val);
+	
+						if(isset($value[$token])) {
+							self::$wrap[$key] = $value[$token];
+						} else {
+							throw new \Exception("Invalid wrap preset is trying to be set in '".$key."' tag.");
+						}
 					} else {
-						throw new \Exception("Invalid wrap preset is trying to be set in '".$key."' tag.");
+						self::$wrap[$key] = $val;
 					}
 				}
 				else if (\is_array($val)) {

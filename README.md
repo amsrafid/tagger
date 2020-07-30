@@ -159,11 +159,13 @@ Similar with **_set_** wrapping functionality works on common wrapper value, usi
 Tag::wrap([
 	'input' => ['div', ['c' => 'col-md-6', ...]],
 	'textarea' => 'div',
+	'select' => '@input'	/* Same as input tag */
 	...
 ]);
 
 Tag::input(['t' => 'text']);
 Tag::textarea();
+Tag::select(['b' => ['option' => ['one', 'two']]]);
 
 Tag::stopWrap(['textarea']);	/* OR Tag::stopWrap('textarea'); */
 Tag::textarea("Text area value");
@@ -173,6 +175,12 @@ Tag::textarea("Text area value");
 ~~~html
 <div class = "col-md-6"><input type = "text" /></div>
 <div><textarea></textarea></div>
+<div class = "col-md-6">
+	<select>
+		<option>one</option>
+		<option>two</option>
+	</select>
+</div>
 <textarea>Text area value</textarea>
 ~~~
 
