@@ -305,7 +305,7 @@ Attributes given bellow are useful only iff **_foreach_** attribute is present.
 ### if:
 
 Normal **_if_** statement like php.\
-Note: **_then_** attribute is allowed as same way of **_if_** statement in **_foreach_** _special attributes_ section. But, only **_array_** type value is working here.
+**Note:** Attribute **_then_** is allowed as same way of **_if_** statement in **_foreach_** _special attributes_ section. But, only **_array_** type value is working here.
 
 ~~~php
 $var = 10;
@@ -320,8 +320,8 @@ if($var > 10)
 
 ### elseif:
 
-Normal **_elseif_** statement like php. Here, this condition will only work iff **_if_** statment is present before this.
-Note: **_then_** attribute is allowed as same way of **_if_** statement.
+Normal **_elseif_** statement like php. Here, this condition will only work iff **_if_** statment is present before this.\
+**Note:** Attribute **_then_** is allowed as same way of **_if_** statement.
 
 ~~~php
 Tag::span(['elseif' => $var > 5, 'b' => 'Var is greater than 5']);
@@ -337,8 +337,8 @@ else if ($var > 5)
 
 ### else:
 
-Normal **_else_** statement like php. Value should be given as **_true_**. Here, this condition will only work iff **_if_** or **_elseif_** statment is present before this.
-Note: **_then_** attribute is not allowed here.
+Normal **_else_** statement like php. Value should be given as **_true_**. Here, this condition will only work iff **_if_** or **_elseif_** statment is present before this.\
+**Note:** Attribute **_then_** is not allowed here.
 
 ~~~php
 Tag::span(['else' => true, 'b' => 'Var is less than 5']);
@@ -354,7 +354,7 @@ else
 
 ## Authors
 
-**_Sadman Rafid_**
+_initially development_ - **_Sadman Rafid_**
 
 ## License
 
