@@ -2,6 +2,13 @@
 
 One of the most flexible html view builder for php. It builds view in php file using same naming convention of html tag and attributes.
 
+# Installation
+This is a composer package. So, require this package in the `composer.json` of your php/framework project or run the command bellow,
+
+~~~
+composer require amsrafid/tagger
+~~~
+
 # Basic use
 
 Very easy to use. Attribute and tag name is same as normal html.
@@ -133,22 +140,25 @@ Preset functionality works on common attribute value using **_set_** method. Her
 ~~~php
 Tag::set([
 	'input' => [
-		'c/cls/class' => 'form-control',
+		'c/cls/class' => 'form-control mt-2',
 		...
 	],
+	'textarea' => '@input',		/* Same as input tag */
 	...
 ]);
 
 Tag::input(['type' => 'text']);
 Tag::input(['type' => 'number']);
+Tag::textarea(['b' => 'Text area', 'c' => 'text-danger']);
 
 Tag::stopSet();
 ~~~
 
 **Output:**
 ~~~html
-<input type = "text" class = "form-control" />
-<input type = "number" class = "form-control" />
+<input type = "text" class = "form-control mt-2" />
+<input type = "number" class = "form-control mt-2" />
+<textarea class = "text-danger form-control mt-2">Text area</textarea>
 ~~~
 
 ## Preset wrapper for identical tag
@@ -223,7 +233,7 @@ $arrs = [
 	
 Tag::table(['border' => '1', 'b' => function() use($arrs) {
 	Tag::tr(['b' => ['th' => ['#', 'ID', 'Name']]]);
-	Tag::tr(['foreach' => $arrs, 'offset' => 'i', 'start' => 1,
+	Tag::tr(['foreach' => $arrs, 'offset' => 'i'
 		'b' => ['td' => ['@i', '@id', '@name']]
 	]);
 }]);
@@ -231,7 +241,7 @@ Tag::table(['border' => '1', 'b' => function() use($arrs) {
 
 **Output**
 ~~~html
-<table border="1">
+<table border = "1">
 	<tr><th>#</th><th>ID</th><th>Name</th></tr>
 	<tr><td>1</td><td>24</td><td>HTML</td></tr>
 	<tr><td>2</td><td>33</td><td>CSS</td></tr>
