@@ -198,7 +198,7 @@ Tag::textarea("Text area value");
 # Special use
 
 ## Label
-Automatic **label tag** can be added before any tag using **_label_** attribute. If label containing tag has a wrapper preset, a label tag will be created into the wrapper before this.
+Automatic `<label>` _tag_ can be added before any tag, using **_label_** attribute. If label containing tag has a wrapper preset, a label tag will be created into the wrapper before this.
 
 ~~~php
 Tag::wrap([
@@ -354,7 +354,7 @@ else
 
 ## Authors
 
-_initially development_ - **_Sadman Rafid_**
+_Initially development_ - **_Sadman Rafid_**
 
 ## License
 
