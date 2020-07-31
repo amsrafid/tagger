@@ -9,6 +9,8 @@ class ControlStatement implements ControlStatementBinding
 {
 	use Attribute;
 
+	private static $monitorThen = false;
+
 	/**
 	 * Control Statement states
 	 * 
@@ -22,6 +24,21 @@ class ControlStatement implements ControlStatementBinding
 	 * @var bool
 	 */
 	private static $monitorIf = true;
+
+	/**
+	 * Attach two attributes
+	 * 
+	 * @return void
+	 */
+	private static function attachAttributes($attributes, $subsidiary)
+	{
+		if($subsidiary) {
+			foreach($subsidiary as $key => $sub)
+				$attributes[$key] = $sub;
+		}
+
+		return $attributes;
+	}
 
 	/**
 	 * Conditional foreach statement
@@ -93,13 +110,35 @@ class ControlStatement implements ControlStatementBinding
 	public static function c_if ($tag, $attributes, $set)
 	{
 		self::$monitorIf = true;
+		self::$monitorThen = false;
+
 		$object = $attributes['if'];
 		self::destroyKey($attributes, 'if');
 		
-		if($object) {
+		$then = [];
+
+		if(isset($attributes['then'])) {
+			$then = $attributes['then'];
+			self::destroyKey($attributes, 'then');
+
+			self::$monitorThen = true;
+		}
+
+		if($then) {
+			$attribute = self::attachAttributes($attributes, $then);
+			
+			if($object) {
+				return Tag::{$tag}($attribute);
+			}
+			
+			self::$monitorIf = false;
 			return Tag::{$tag}($attributes);
 		} else {
-			self::$monitorIf = false;
+			if($object) {
+				return Tag::{$tag}($attributes);
+			} else {
+				self::$monitorIf = false;
+			}
 		}
 
 		return '';
@@ -113,13 +152,31 @@ class ControlStatement implements ControlStatementBinding
 	 * @param array 	$set 		Next conditional statement
 	 * @return tag view
 	 */
-	public static function c_elseif($tag, $attributes, $set) {
+	public static function c_elseif($tag, $attributes, $set)
+	{
 		$object = $attributes['elseif'];
 		self::destroyKey($attributes, 'elseif');
+
+		$then = [];
+
+		if(isset($attributes['then'])) {
+			$then = $attributes['then'];
+			self::destroyKey($attributes, 'then');
+			self::$monitorThen = true;
+		}
 		
-		if(! self::$monitorIf && $object) {
-			self::$monitorIf = true;
+		if($then) {
+			$attribute = self::attachAttributes($attributes, $then);
+
+			if($object)
+				return Tag::{$tag}($attribute);
+			
 			return Tag::{$tag}($attributes);
+		} else {
+			if((! self::$monitorIf && $object) || self::$monitorThen) {
+				self::$monitorIf = true;
+				return Tag::{$tag}($attributes);
+			}
 		}
 
 		return '';
@@ -137,7 +194,7 @@ class ControlStatement implements ControlStatementBinding
 		$object = $attributes['else'];
 		self::destroyKey($attributes, 'else');
 		
-		if(! self::$monitorIf && $object != false) {
+		if((! self::$monitorIf && $object != false) || self::$monitorThen) {
 			self::$monitorIf = true;
 			return Tag::{$tag}($attributes);
 		}
