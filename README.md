@@ -289,7 +289,10 @@ Attributes given bellow are useful only iff **_foreach_** attribute is present.
 
 - **'then' => string|array**
 	- This attribute works when **_'if'_** condition is valid.
-	- **_String_** type value consideres as attribute value _true_. Multiple _string_ can be considered as identical attribute that seperated with _comma_ or _semicolon_ or _dot_ or _space_ `, OR ; OR . OR \s+`. Ex: **_selected disabled_**
+	- **_String_** type value consideres as attribute value _true_. Multiple _string_ can be considered as identical attribute that seperated with _comma_ or _semicolon_ or _dot_ or _space_ `, OR ; OR . OR \s+`.
+	- Ex:
+		- **_'then' => 'selected disabled'_**
+		- **_'then' => ['selected' => true, 'disabled' => true]_**
 	- Here, **_array_** contains attribute set which will be changed after a valid **_if_** condition.
 
 - **'offset' => string**
@@ -302,7 +305,7 @@ Attributes given bellow are useful only iff **_foreach_** attribute is present.
 ### if:
 
 Normal **_if_** statement like php.\
-Note: **_then_** attribute is allowed as same way of **_if_** statement in **_foreach_** _special attributes_ section. But, only **_array_** type is working.
+Note: **_then_** attribute is allowed as same way of **_if_** statement in **_foreach_** _special attributes_ section. But, only **_array_** type value is working here.
 
 ~~~php
 $var = 10;
@@ -318,7 +321,7 @@ if($var > 10)
 ### elseif:
 
 Normal **_elseif_** statement like php. Here, this condition will only work iff **_if_** statment is present before this.
-Note: **_then_** attribute is allowed as same way of **_if_**.
+Note: **_then_** attribute is allowed as same way of **_if_** statement.
 
 ~~~php
 Tag::span(['elseif' => $var > 5, 'b' => 'Var is greater than 5']);
@@ -335,7 +338,7 @@ else if ($var > 5)
 ### else:
 
 Normal **_else_** statement like php. Value should be given as **_true_**. Here, this condition will only work iff **_if_** or **_elseif_** statment is present before this.
-Note: **_then_** attribute is not allowed here
+Note: **_then_** attribute is not allowed here.
 
 ~~~php
 Tag::span(['else' => true, 'b' => 'Var is less than 5']);
@@ -351,11 +354,7 @@ else
 
 ## Authors
 
-- Developer
-	- **_Sadman Rafid_**
-
--	Support
-	- **_Tahmidur Rafid_**
+**_Sadman Rafid_**
 
 ## License
 
