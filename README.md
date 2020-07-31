@@ -3,6 +3,7 @@
 One of the most flexible html view builder for php. It builds view in php file using same naming convention of html tag and attributes.
 
 # Installation
+
 This is a composer package. So, require this package in the `composer.json` of your php/framework project or run the command bellow,
 
 ~~~
@@ -345,9 +346,13 @@ else
 	echo "<span>Var is less than 5</span>
 ~~~
 
-## Security Vulnerabilities
+## Authors
 
-If you discover a security vulnerability within this, please send an e-mail to **_Sadman Rafid_** via [amsrafid@gmail.com](mailto:amsrafid@gmail.com). All security vulnerabilities will be promptly addressed.
+- Developer
+	- **_Sadman Rafid_**
+
+-	Support
+	- **_Tahmidur Rafid_**
 
 ## License
 
